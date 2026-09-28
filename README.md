@@ -43,8 +43,10 @@ Daarna opent het zonder adresbalk, en werkt het ook zonder internet.
 **Snel even testen zonder GitHub** (laptop en telefoon op hetzelfde wifi):
 
 ```bash
-cd "/Users/boazderijk/Desktop/Hebreeuws Alfabet Oefenen" && python3 -m http.server 8000
+python3 -m http.server 8000
 ```
+
+(draai dit in de map waar `index.html` staat)
 
 Zoek het ip-adres van je laptop (Systeeminstellingen → Wi-Fi → Details) en ga
 op je telefoon naar `http://<dat-ip>:8000`. Werkt alleen zolang je laptop
