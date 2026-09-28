@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a1530">
+<title>עברית — Hebreeuws Oefenen</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@400;600;800&family=Noto+Serif+Hebrew:wght@400;700&family=Noto+Rashi+Hebrew:wght@400;700&family=Frank+Ruhl+Libre:wght@400;700;900&family=David+Libre:wght@400;500;700&family=Suez+One&family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#141026;
+    --bg2:#1c1638;
+    --panel:#211b3f;
+    --panel2:#291f4d;
+    --accent:#e8b04b;
+    --accent2:#7b6ef6;
+    --good:#4cc38a;
+    --bad:#e8607a;
+    --text:#f2eefb;
+    --text-dim:#b3a9d4;
+    --border:#382f5e;
+    --radius:16px;
+    --font-ui:'Rubik',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(circle at 20% 0%,#241d47 0%,var(--bg) 55%);
+    color:var(--text);
+    font-family:var(--font-ui);
+    min-height:100vh;
+    padding-bottom:76px;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:14px 14px 4px;}
+  header.top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 4px 6px;
+  }
+  header.top h1{
+    font-size:1.15rem;margin:0;display:flex;align-items:center;gap:8px;font-weight:800;
+  }
+  header.top h1 .he{font-family:'Frank Ruhl Libre',serif;font-size:1.4rem;color:var(--accent);}
+  .icon-btn{
+    background:var(--panel);border:1px solid var(--border);color:var(--text);
+    width:40px;height:40px;border-radius:12px;font-size:1.1rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon-btn:active{transform:scale(.94);}
+  .top-knoppen{display:flex;gap:8px;align-items:center;}
+  .profiel-knop{
+    background:var(--panel);border:1px solid var(--border);color:var(--text);
+    height:40px;padding:0 14px;border-radius:12px;font-size:.85rem;font-weight:700;
+    cursor:pointer;font-family:var(--font-ui);max-width:150px;overflow:hidden;
+    text-overflow:ellipsis;white-space:nowrap;
+  }
+  .profiel-knop:active{transform:scale(.96);}
+  #profielPanel{display:none;}
+  #profielPanel.open{display:block;}
+  .profiel-rij{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:11px 13px;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;
+    cursor:pointer;background:var(--panel2);font-weight:700;
+  }
+  .profiel-rij.actief{border-color:var(--accent2);color:var(--accent2);background:rgba(123,110,246,.12);}
+  .profiel-rij .cijfers{font-size:.72rem;font-weight:400;color:var(--text-dim);}
+  .profiel-acties{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+
+  /* Samenvatting op de voortgangspagina */
+  .score-kaart{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+  .score-vak{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;}
+  .score-vak .getal{font-size:1.5rem;font-weight:800;color:var(--accent);}
+  .score-vak .wat{font-size:.68rem;color:var(--text-dim);line-height:1.3;margin-top:4px;}
+
+  /* Sectie-schakelaar */
+  .section-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 2px 2px;}
+  .sect-btn{
+    background:var(--panel);border:1px solid var(--border);color:var(--text-dim);
+    padding:12px 8px;border-radius:14px;font-weight:800;font-size:.85rem;cursor:pointer;
+    font-family:var(--font-ui);
+  }
+  .sect-btn.active{background:linear-gradient(135deg,var(--accent2),#5a4fd6);color:#fff;border-color:var(--accent2);}
+
+  /* Tab bar (desktop: top row / mobile: fixed bottom) */
+  nav.tabs{
+    display:flex;gap:6px;overflow-x:auto;padding:4px 2px 10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;background:var(--panel);border:1px solid var(--border);
+    color:var(--text-dim);padding:9px 14px;border-radius:999px;font-size:.85rem;
+    font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  .tab-btn.active{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+
+  main{padding:4px 2px 40px;}
+  .card-surface{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px;margin-bottom:14px;
+  }
+  .muted{color:var(--text-dim);font-size:.85rem;line-height:1.5;}
+  .he{font-family:'Noto Sans Hebrew',sans-serif;direction:rtl;unicode-bidi:isolate;}
+
+  /* Settings panel */
+  #settingsPanel{display:none;}
+  #settingsPanel.open{display:block;}
+  .setting-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+  .setting-row:last-child{border-bottom:none;}
+  .switch{position:relative;width:44px;height:26px;flex:0 0 auto;}
+  .switch input{opacity:0;width:0;height:0;}
+  .slider{position:absolute;inset:0;background:#3a3160;border-radius:999px;cursor:pointer;transition:.15s;}
+  .slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.15s;}
+  input:checked + .slider{background:var(--accent2);}
+  input:checked + .slider::before{transform:translateX(18px);}
+  .danger-btn{background:transparent;border:1px solid var(--bad);color:var(--bad);padding:9px 14px;border-radius:10px;font-weight:600;cursor:pointer;font-size:.85rem;}
+
+  /* Flashcards */
+  .flash-stage{display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .flash-count{color:var(--text-dim);font-size:.8rem;}
+  .flashcard{
+    width:100%;max-width:320px;aspect-ratio:1/1;
+    background:linear-gradient(160deg,var(--panel2),var(--panel));
+    border:1px solid var(--border);border-radius:20px;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;position:relative;user-select:none;
+    box-shadow:0 8px 30px rgba(0,0,0,.35);
+  }
+  .flashcard .glyph{font-size:clamp(4.5rem,22vw,7rem);line-height:1;color:var(--text);}
+  .flashcard .back{display:none;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:16px;}
+  .flashcard.flipped .front{display:none;}
+  .flashcard.flipped .back{display:flex;}
+  .flashcard .back .naam{font-size:1.5rem;font-weight:800;color:var(--accent);}
+  .flashcard .back .klank{font-size:.95rem;color:var(--text-dim);}
+  .flashcard .hint{position:absolute;bottom:10px;font-size:.7rem;color:var(--text-dim);}
+  .flash-nav{display:flex;gap:10px;align-items:center;}
+  .nav-btn{
+    background:var(--panel2);border:1px solid var(--border);color:var(--text);
+    padding:12px 20px;border-radius:12px;font-weight:700;font-size:.95rem;cursor:pointer;
+  }
+  .nav-btn:active{transform:scale(.96);}
+  .nav-btn.wide{flex:1;text-align:center;}
+
+  /* Schrijven / traceren */
+  .trace-wrap{display:flex;flex-direction:column;gap:14px;}
+  .trace-top{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .trace-stage{
+    position:relative;width:100%;max-width:340px;aspect-ratio:1/1;margin:0 auto;
+    background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--border);
+    border-radius:20px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.35);
+  }
+  .trace-guide{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:clamp(6rem,34vw,10rem);color:rgba(255,255,255,.16);pointer-events:none;
+    user-select:none;line-height:1;transition:opacity .15s;
+  }
+  .trace-guide.hidden{opacity:0;}
+  #traceCanvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;}
+  .trace-controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+  .trace-controls .nav-btn{flex:1;min-width:110px;}
+  .trace-tips{font-size:.8rem;color:var(--text-dim);line-height:1.5;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;}
+  .trace-check{margin-top:2px;}
+
+  /* Quiz */
+  .quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .score-pill{background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:.8rem;font-weight:700;color:var(--accent);}
+  .quiz-stage{background:var(--panel2);border-radius:16px;padding:28px 16px;text-align:center;margin-bottom:16px;}
+  .quiz-glyph{font-size:clamp(4rem,20vw,6rem);color:var(--text);}
+  .quiz-question{font-size:1.3rem;font-weight:700;color:var(--text);}
+  .quiz-sub{color:var(--text-dim);font-size:.85rem;margin-top:6px;}
+  .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .opt-btn{
+    background:var(--panel);border:2px solid var(--border);color:var(--text);
+    padding:16px 10px;border-radius:14px;font-size:1.1rem;font-weight:700;cursor:pointer;
+    min-height:64px;display:flex;align-items:center;justify-content:center;text-align:center;
+  }
+  .opt-btn.he{font-size:2rem;}
+  .opt-btn:active{transform:scale(.97);}
+  .opt-btn.correct{border-color:var(--good);background:rgba(76,195,138,.15);color:var(--good);}
+  .opt-btn.wrong{border-color:var(--bad);background:rgba(232,96,122,.15);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback-bar{min-height:30px;text-align:center;font-weight:700;margin:10px 0;}
+  .feedback-bar.good{color:var(--good);}
+  .feedback-bar.bad{color:var(--bad);}
+
+  /* Memory */
+  .memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .mem-card{
+    aspect-ratio:3/4;background:var(--panel2);border:1px solid var(--border);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:4px;text-align:center;
+    font-weight:700;
+  }
+  .mem-card.hidden-face{background:linear-gradient(160deg,var(--accent2),#4a3f9c);}
+  .mem-card.hidden-face .inner{display:none;}
+  .mem-card .glyph{font-size:1.8rem;}
+  .mem-card .naam{font-size:.7rem;line-height:1.2;color:var(--text-dim);}
+  .mem-card.matched{opacity:.35;pointer-events:none;}
+  .mem-card.wrong{border-color:var(--bad);}
+  .mem-card.word-mode .glyph{font-size:.95rem;line-height:1.2;}
+  .mem-card.word-mode .naam{font-size:.62rem;}
+  .mem-meta{display:flex;justify-content:space-between;margin-bottom:10px;color:var(--text-dim);font-size:.85rem;}
+
+  /* Font gallery */
+  .font-row{display:flex;align-items:center;gap:14px;padding:10px 4px;border-bottom:1px solid var(--border);}
+  .font-row:last-child{border-bottom:none;}
+  .font-row .glyph{font-size:2.2rem;width:56px;text-align:center;flex:0 0 auto;}
+  .font-row .meta .style-name{font-size:.8rem;color:var(--accent);font-weight:700;}
+  .font-row .meta .letter-name{font-size:.75rem;color:var(--text-dim);}
+  .letter-picker{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:6px;}
+  .pick-chip{flex:0 0 auto;background:var(--panel2);border:1px solid var(--border);border-radius:10px;
+    padding:8px 12px;font-size:1.2rem;cursor:pointer;}
+  .pick-chip.active{border-color:var(--accent);color:var(--accent);}
+
+  /* Woorden: aangepaste maten voor langere tekst */
+  .flashcard.word .glyph{font-size:clamp(1.8rem,9vw,2.6rem);padding:0 12px;text-align:center;line-height:1.4;}
+  .quiz-glyph.word{font-size:clamp(2rem,9vw,3.2rem);line-height:1.3;}
+  .opt-btn.he.word{font-size:1.3rem;}
+
+  /* Bibliotheek */
+  .bib-zoek{
+    width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);
+    border-radius:12px;padding:12px 14px;font-size:1rem;font-family:var(--font-ui);margin-bottom:10px;
+  }
+  .bib-zoek:focus{outline:none;border-color:var(--accent2);}
+  .bib-zoek::placeholder{color:#6f649b;}
+  .bib-telling{font-size:.78rem;color:var(--text-dim);margin-bottom:10px;padding:0 2px;}
+  .bib-rij{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--border);}
+  .bib-rij:last-child{border-bottom:none;}
+  .bib-stip{width:9px;height:9px;border-radius:50%;flex:0 0 auto;background:#443a6e;}
+  .bib-stip.bezig{background:var(--accent);}
+  .bib-stip.beheerst{background:var(--good);}
+  .bib-he{font-size:1.25rem;flex:0 0 auto;min-width:92px;}
+  .bib-tekst{flex:1;min-width:0;}
+  .bib-tekst .nl{font-size:.88rem;}
+  .bib-tekst .tr{font-size:.72rem;color:var(--text-dim);}
+  .bib-cat{font-size:.62rem;color:var(--text-dim);flex:0 0 auto;text-align:right;max-width:88px;line-height:1.2;}
+
+  /* Zinnetjes */
+  .zin-card{background:var(--panel2);border:1px solid var(--border);border-radius:16px;padding:26px 18px;text-align:center;margin-bottom:14px;}
+  .zin-text{font-size:clamp(1.4rem,7vw,2.1rem);line-height:2;}
+  .zin-word{cursor:pointer;padding:2px 5px;border-radius:6px;transition:background .1s;}
+  .zin-word:hover{background:rgba(232,176,75,.12);}
+  .zin-word.tapped{background:rgba(232,176,75,.22);color:var(--accent);}
+  .zin-gloss{min-height:26px;margin-top:12px;font-weight:700;color:var(--accent);font-size:.9rem;}
+  .zin-trans{color:var(--text-dim);margin-top:10px;font-size:.9rem;}
+  .zin-meaning{color:var(--text);margin-top:6px;font-weight:700;font-size:1rem;}
+  .zinsbouw-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:.82rem;line-height:1.6;color:var(--text-dim);}
+  .zinsbouw-card strong{color:var(--accent);}
+  .zin-word.ok{background:rgba(76,195,138,.2);color:var(--good);}
+  .zin-word.mis{background:rgba(232,96,122,.18);color:var(--bad);}
+
+  /* Zelf de uitspraak opschrijven en nakijken */
+  .lees-controle{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+  .lees-label{font-size:.8rem;color:var(--text-dim);margin-bottom:8px;}
+  .lees-rij{display:flex;gap:8px;}
+  .lees-veld{
+    flex:1;min-width:0;background:var(--panel2);border:1px solid var(--border);color:var(--text);
+    border-radius:12px;padding:12px 14px;font-size:1rem;font-family:var(--font-ui);
+  }
+  .lees-veld:focus{outline:none;border-color:var(--accent2);}
+  .lees-veld::placeholder{color:#6f649b;}
+  .lees-rij .nav-btn{flex:0 0 auto;}
+  .lees-uitslag{margin-top:12px;font-size:.9rem;line-height:1.5;}
+  .lees-uitslag.goed{color:var(--good);}
+  .lees-uitslag.deels{color:var(--bad);}
+  .lees-juist{color:var(--accent);font-weight:700;}
+  .lees-toelichting{margin-top:8px;font-size:.72rem;color:var(--text-dim);line-height:1.5;}
+
+  /* Stammen (wortels) */
+  .root-picker{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:6px;}
+  .root-chip{flex:0 0 auto;background:var(--panel2);border:1px solid var(--border);border-radius:10px;
+    padding:8px 12px;font-size:1rem;cursor:pointer;text-align:center;}
+  .root-chip .letters{font-weight:800;}
+  .root-chip.active{border-color:var(--accent);color:var(--accent);}
+  .root-header{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;}
+  .root-header .letters{font-size:2.2rem;font-weight:800;color:var(--accent);letter-spacing:4px;}
+  .root-header .betekenis{color:var(--text-dim);font-size:.95rem;}
+  .root-row{display:flex;align-items:center;gap:14px;padding:10px 4px;border-bottom:1px solid var(--border);}
+  .root-row:last-child{border-bottom:none;}
+  .root-row .glyph{font-size:1.6rem;width:110px;flex:0 0 auto;}
+  .root-row .meta .vorm{font-size:.72rem;color:var(--accent2);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+  .root-row .meta .betekenis-woord{font-size:.9rem;}
+
+  /* Nikud table */
+  .nikud-grid{display:grid;grid-template-columns:1fr;gap:8px;}
+  .nikud-item{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;}
+  .nikud-item .glyph{font-size:2.4rem;width:64px;text-align:center;flex:0 0 auto;}
+  .nikud-item .body strong{color:var(--accent);}
+  .nikud-item .body .k{color:var(--text-dim);font-size:.85rem;}
+
+  /* Progress */
+  .prog-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);}
+  .prog-row:last-child{border-bottom:none;}
+  .prog-row .glyph{min-width:34px;max-width:80px;text-align:center;font-size:1.1rem;flex:0 0 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .prog-label{flex:0 0 72px;font-size:.68rem;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .prog-bar-bg{flex:1;height:8px;background:#392f5c;border-radius:999px;overflow:hidden;}
+  .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--bad),var(--accent),var(--good));}
+  .prog-pct{width:42px;text-align:right;font-size:.75rem;color:var(--text-dim);}
+  .section-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin:18px 0 8px;font-weight:700;}
+
+  .checkbox-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .chip-toggle{background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:7px 13px;font-size:.78rem;cursor:pointer;color:var(--text-dim);}
+  .chip-toggle.on{border-color:var(--accent2);color:var(--accent2);background:rgba(123,110,246,.12);}
+
+  @media (min-width:640px){
+    body{padding-bottom:20px;}
+    .options-grid{grid-template-columns:1fr 1fr;}
+    .memory-grid{grid-template-columns:repeat(6,1fr);}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1><span class="he">א</span> Hebreeuws Oefenen</h1>
+    <div class="top-knoppen">
+      <button class="profiel-knop" id="profielToggle" title="Wie oefent er?">👤 <span id="profielNaam">Ik</span></button>
+      <button class="icon-btn" id="settingsToggle" title="Instellingen">⚙</button>
+    </div>
+  </header>
+
+  <div class="card-surface" id="profielPanel">
+    <div class="muted" style="margin-bottom:10px;">Wie oefent er? Iedereen heeft een eigen voortgang; de app onthoudt per persoon waar je gebleven bent.</div>
+    <div id="profielLijst"></div>
+    <div class="profiel-acties">
+      <button class="nav-btn" id="profielNieuw">+ Nieuw profiel</button>
+      <button class="nav-btn" id="profielHernoem">✎ Naam wijzigen</button>
+      <button class="danger-btn" id="profielWeg">Verwijderen</button>
+    </div>
+  </div>
+
+  <div class="card-surface" id="settingsPanel">
+    <div class="setting-row">
+      <div>
+        <div style="font-weight:700;">Slotletters meenemen</div>
+        <div class="muted">ך ם ן ף ץ in quiz &amp; oefeningen</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="optSofit" checked><span class="slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div style="font-weight:700;">Steeds ander lettertype</div>
+        <div class="muted">Elke vraag in een willekeurige stijl</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="optRandomFont" checked><span class="slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div>
+        <div style="font-weight:700;">Voortgang bijhouden</div>
+        <div class="muted">Moeilijke letters vaker herhalen</div>
+      </div>
+      <button class="danger-btn" id="resetProgress">Reset voortgang</button>
+    </div>
+  </div>
+
+  <div class="section-switch" id="sectionSwitch">
+    <button class="sect-btn active" data-sectie="letters">🔤 Letters</button>
+    <button class="sect-btn" data-sectie="woorden">📖 Woorden &amp; zinnen</button>
+  </div>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <main id="main"></main>
+</div>
+
+<script src="materiaal.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ============ MATERIAAL ============ */
+/* Alle leerstof staat in materiaal.js. Voeg nieuw materiaal DAAR toe. */
+
+const M = window.MATERIAAL;
+if(!M){
+  document.getElementById('main').innerHTML =
+    '<div class=\'card-surface\'><strong>materiaal.js kon niet geladen worden.</strong>' +
+    '<div class=\'muted\'>Zonder dat bestand is er geen leerstof. Staat het in dezelfde map als index.html?</div></div>';
+  return;
+}
+const {LETTERS, SLOTLETTERS, NIKUD, DIAKRIETEN, CATEGORIE_LABELS, WOORDEN, ZIN_CATEGORIE_LABELS, ZINNEN, ROOTS} = M;
+const WOORD_CATEGORIEEN = Object.keys(CATEGORIE_LABELS);
+const ZIN_CATEGORIEEN = Object.keys(ZIN_CATEGORIE_LABELS);
+
+/* ============ DATA ============ */
+
+const FONTS = [
+  {label:'Blokschrift (modern)', family:"'Noto Sans Hebrew', sans-serif"},
+  {label:'Klassiek boekschrift', family:"'Frank Ruhl Libre', serif"},
+  {label:'Krantenletter', family:"'David Libre', serif"},
+  {label:'Rasji-schrift', family:"'Noto Rashi Hebrew', serif"},
+  {label:'Vet display', family:"'Suez One', sans-serif"},
+  {label:'Sierserif', family:"'Noto Serif Hebrew', serif"},
+];
+
+function randomFont(){ return FONTS[Math.floor(Math.random()*FONTS.length)]; }
+
+function zinTekst(z){ return z.woorden.map(w=>w.he).join(' '); }
+
+/* ============ FONETISCHE CONTROLE ============ */
+/* Je typt zelf op hoe je het leest; dit vergelijkt dat met de uitspraak.
+   Transliteratie is geen exacte wetenschap — "sjalom", "shalom" en "salom"
+   bedoelen hetzelfde. Daarom wordt eerst alles naar één schrijfwijze
+   teruggebracht, en daarna nog één typefout per woord toegestaan. Te streng
+   zijn zou goede antwoorden afkeuren, en daar leer je niets van. */
+
+function fonetischKaal(t){
+  let s = String(t).toLowerCase();
+  s = s.normalize('NFD').replace(/[̀-ͯ]/g,'');   // accenten weg
+  s = s.replace(/['`´’\-_.,!?;:()]/g,'');                  // leestekens weg
+  s = s.replace(/sj/g,'sh').replace(/kh/g,'ch').replace(/tz/g,'ts');
+  s = s.replace(/oe/g,'u').replace(/ie/g,'i').replace(/eu/g,'u');
+  s = s.replace(/j/g,'y').replace(/w/g,'v').replace(/q/g,'k').replace(/x/g,'ks');
+  s = s.replace(/(.)\1+/g,'$1');                           // dubbele letters
+  return s.replace(/\s+/g,' ').trim();
+}
+
+function afstand(a,b){
+  if(a===b) return 0;
+  const rij = Array.from({length:b.length+1},(_,i)=>i);
+  for(let i=1;i<=a.length;i++){
+    let vorig = rij[0];
+    rij[0] = i;
+    for(let j=1;j<=b.length;j++){
+      const tijdelijk = rij[j];
+      rij[j] = Math.min(rij[j]+1, rij[j-1]+1, vorig + (a[i-1]===b[j-1] ? 0 : 1));
+      vorig = tijdelijk;
+    }
+  }
+  return rij[b.length];
+}
+
+function fonetischGelijk(mijn, juist){
+  const a = fonetischKaal(mijn), b = fonetischKaal(juist);
+  if(!a || !b) return false;
+  if(a===b) return true;
+  const ruimte = b.length >= 5 ? 2 : (b.length >= 3 ? 1 : 0);
+  return afstand(a,b) <= ruimte;
+}
+
+/* Betekenissen staan als "hallo / vrede / tot ziens" of "wil (mannelijk)".
+   Elk alternatief telt als goed, en lidwoorden doen er niet toe. */
+function betekenisVarianten(nl){
+  return String(nl)
+    .replace(/\([^)]*\)/g,' ')
+    .split(/[\/,;]| of /)
+    .map(s=>s.trim())
+    .filter(Boolean);
+}
+
+function betekenisKaal(t){
+  return String(t).toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/[^a-z0-9\s]/g,' ')
+    .replace(/\b(de|het|een|the|to|zijn)\b/g,' ')
+    .replace(/\s+/g,' ').trim();
+}
+
+function betekenisGelijk(mijn, nl){
+  const a = betekenisKaal(mijn);
+  if(!a) return false;
+  return betekenisVarianten(nl).some(variant=>{
+    const b = betekenisKaal(variant);
+    if(!b) return false;
+    if(a===b) return true;
+    const ruimte = b.length >= 6 ? 2 : (b.length >= 4 ? 1 : 0);
+    return afstand(a,b) <= ruimte;
+  });
+}
+
+/* Vergelijkt woord voor woord. `juisteDelen` is de uitspraak opgesplitst in
+   woorden; wat de gebruiker typte wordt op dezelfde manier gesplitst. */
+function fonetischVergelijk(ingetypt, juist){
+  const mijn = fonetischKaal(ingetypt).split(' ').filter(Boolean);
+  const doel = fonetischKaal(juist).split(' ').filter(Boolean);
+  const perWoord = doel.map((d,i)=>{
+    if(mijn[i] && fonetischGelijk(mijn[i], d)) return true;
+    // verschoven: iemand die een woord oversloeg of samenvoegde
+    return mijn.some(m=>fonetischGelijk(m,d));
+  });
+  const goed = perWoord.filter(Boolean).length;
+  return {perWoord, doel, goed, totaal: doel.length, alles: goed===doel.length && mijn.length>0};
+}
+
+// Wortels (shoresh): de meeste Hebreeuwse werkwoorden en veel zelfstandige
+// naamwoorden zijn opgebouwd rond 3 kernmedeklinkers die vast blijven terwijl
+// de vervoeging eromheen verandert. letters = de kaal getoonde stam.
+function rootLabel(root){ return root.letters.join('-'); }
+function rootKey(root){ return 'wortel-'+rootLabel(root); }
+function keyWortelWoord(w){ return 'wortelwoord-'+w.he; }
+function alleWortelWoorden(){
+  const lijst = [];
+  ROOTS.forEach(root=> root.familie.forEach(w=> lijst.push({...w, root})));
+  return lijst;
+}
+
+/* ============ STATE / OPSLAG ============ */
+
+const LS_PROFIELEN = 'hebreeuwsProfielen_v1';
+const LS_PROGRESS  = 'hebreeuwsLeerVoortgang_v1';
+const LS_SETTINGS  = 'hebreeuwsLeerInstellingen_v1';
+const LS_PLEK      = 'hebreeuwsPlek_v1';
+
+function lees(sleutel, standaard){
+  try{
+    const rauw = localStorage.getItem(sleutel);
+    if(rauw==null) return standaard;
+    const waarde = JSON.parse(rauw);
+    return waarde==null ? standaard : waarde;
+  }catch(e){ return standaard; }
+}
+function schrijf(sleutel, waarde){
+  try{ localStorage.setItem(sleutel, JSON.stringify(waarde)); }
+  catch(e){ /* opslag vol of geweigerd: oefenen werkt door, onthouden niet */ }
+}
+
+/* Profielen: meerdere mensen op één apparaat, elk een eigen voortgang. */
+let profielen = lees(LS_PROFIELEN, null);
+if(!profielen || !Array.isArray(profielen.lijst) || !profielen.lijst.length){
+  profielen = {actief:'p1', lijst:[{id:'p1', naam:'Ik'}]};
+  schrijf(LS_PROFIELEN, profielen);
+}
+function actiefProfiel(){
+  return profielen.lijst.find(p=>p.id===profielen.actief) || profielen.lijst[0];
+}
+function sleutelVoor(basis, profielId){ return basis + '__' + (profielId || actiefProfiel().id); }
+
+/* Voortgang van vóór de profielen hoort bij het eerste profiel. */
+(function migreerOudeVoortgang(){
+  [LS_PROGRESS, LS_SETTINGS].forEach(basis=>{
+    const oud = localStorage.getItem(basis);
+    if(oud && !localStorage.getItem(basis+'__p1')){
+      try{ localStorage.setItem(basis+'__p1', oud); }catch(e){}
+    }
+  });
+})();
+
+let voortgang = {};
+let settings = {sofit:true, randomFont:true};
+let plek = {};
+
+function laadProfielData(){
+  voortgang = lees(sleutelVoor(LS_PROGRESS), {}) || {};
+  settings = Object.assign({sofit:true, randomFont:true}, lees(sleutelVoor(LS_SETTINGS), {}) || {});
+  plek = lees(sleutelVoor(LS_PLEK), {}) || {};
+}
+laadProfielData();
+
+function bewaarVoortgang(){ schrijf(sleutelVoor(LS_PROGRESS), voortgang); }
+function bewaarSettings(){ schrijf(sleutelVoor(LS_SETTINGS), settings); }
+
+function meldResultaat(key, goed){
+  const st = voortgang[key] || {correct:0, wrong:0};
+  if(goed) st.correct++; else st.wrong++;
+  st.laatst = Date.now();
+  voortgang[key] = st;
+  bewaarVoortgang();
+}
+
+function voortgangCijfers(profielId){
+  const bron = profielId ? (lees(sleutelVoor(LS_PROGRESS, profielId), {}) || {}) : voortgang;
+  const rijen = Object.values(bron);
+  const gedaan = rijen.reduce((s,x)=>s + x.correct + x.wrong, 0);
+  const goed = rijen.reduce((s,x)=>s + x.correct, 0);
+  const beheerst = rijen.filter(x=>{
+    const t = x.correct + x.wrong;
+    return t >= 3 && x.correct/t >= 0.8;
+  }).length;
+  const laatst = rijen.reduce((m,x)=>Math.max(m, x.laatst||0), 0);
+  return {gedaan, goed, beheerst, onderdelen: rijen.length, laatst,
+          percentage: gedaan ? Math.round(goed/gedaan*100) : 0};
+}
+
+function accuracyVan(key){
+  const st = voortgang[key];
+  if(!st) return null;
+  const totaal = st.correct + st.wrong;
+  return totaal ? st.correct/totaal : null;
+}
+
+function gewichtVan(key){
+  const st = voortgang[key] || {correct:0, wrong:0};
+  const totaal = st.correct + st.wrong;
+  const acc = totaal ? st.correct/totaal : 0.5;
+  return 0.4 + (1-acc)*2.2 + (totaal===0 ? 1.2 : 0);
+}
+
+function gewogenKeuze(items, keyFn, uitsluiten){
+  const pool = uitsluiten ? items.filter(it=>keyFn(it)!==uitsluiten) : items;
+  const gewichten = pool.map(it=>gewichtVan(keyFn(it)));
+  const totaal = gewichten.reduce((a,b)=>a+b,0);
+  let r = Math.random()*totaal;
+  for(let i=0;i<pool.length;i++){
+    r -= gewichten[i];
+    if(r<=0) return pool[i];
+  }
+  return pool[pool.length-1];
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function huidigePool(){
+  return settings.sofit ? LETTERS.concat(SLOTLETTERS) : LETTERS.slice();
+}
+
+let woordCategorieFilter = 'alle';
+function woordenPool(){
+  return woordCategorieFilter==='alle' ? WOORDEN : WOORDEN.filter(w=>w.categorie===woordCategorieFilter);
+}
+
+function renderCategorieChips(container, onChange){
+  const row = document.createElement('div');
+  row.className = 'checkbox-row';
+  WOORD_CATEGORIEEN.forEach(cat=>{
+    const chip = document.createElement('button');
+    chip.className = 'chip-toggle' + (woordCategorieFilter===cat ? ' on' : '');
+    chip.textContent = CATEGORIE_LABELS[cat];
+    chip.addEventListener('click', ()=>{ woordCategorieFilter = cat; onChange(); });
+    row.appendChild(chip);
+  });
+  container.appendChild(row);
+}
+
+/* ============ NAVIGATIE ============ */
+
+const SECTIE_TABS = {
+  letters: [
+    {mode:'flash', label:'🗂 Kaarten'},
+    {mode:'trace', label:'✍️ Schrijven'},
+    {mode:'quiz', label:'❓ Letter→Naam'},
+    {mode:'klank', label:'🔊 Naam→Letter'},
+    {mode:'nikud', label:'◌ Nikud'},
+    {mode:'memory', label:'🧩 Geheugenspel'},
+    {mode:'fonts', label:'🔤 Lettertypen'},
+    {mode:'progress', label:'📊 Voortgang'},
+  ],
+  woorden: [
+    {mode:'wflash', label:'🗂 Woordkaarten'},
+    {mode:'lezen', label:'📖 Lezen'},
+    {mode:'wquiz', label:'❓ Woord→Betekenis'},
+    {mode:'wklank', label:'🔤 Betekenis→Woord'},
+    {mode:'zinnen', label:'💬 Zinnetjes'},
+    {mode:'bib', label:'📚 Bibliotheek'},
+    {mode:'stammen', label:'🌱 Stammen'},
+    {mode:'wmemory', label:'🧩 Geheugenspel'},
+    {mode:'progress', label:'📊 Voortgang'},
+  ],
+};
+
+let huidigeSectie = 'letters';
+let huidigeMode = 'flash';
+const main = document.getElementById('main');
+const tabsEl = document.getElementById('tabs');
+const sectionSwitchEl = document.getElementById('sectionSwitch');
+
+function renderTabsBar(){
+  tabsEl.innerHTML = '';
+  SECTIE_TABS[huidigeSectie].forEach(t=>{
+    const b = document.createElement('button');
+    b.className = 'tab-btn';
+    b.dataset.mode = t.mode;
+    b.textContent = t.label;
+    tabsEl.appendChild(b);
+  });
+}
+
+tabsEl.addEventListener('click', e=>{
+  const btn = e.target.closest('.tab-btn');
+  if(!btn) return;
+  huidigeMode = btn.dataset.mode;
+  render();
+});
+
+sectionSwitchEl.addEventListener('click', e=>{
+  const btn = e.target.closest('.sect-btn');
+  if(!btn) return;
+  huidigeSectie = btn.dataset.sectie;
+  Array.from(sectionSwitchEl.children).forEach(b=>b.classList.toggle('active', b===btn));
+  huidigeMode = SECTIE_TABS[huidigeSectie][0].mode;
+  renderTabsBar();
+  render();
+});
+
+/* ---- Profielen: wisselen, toevoegen, hernoemen, verwijderen ---- */
+
+const profielPanel = document.getElementById('profielPanel');
+
+function tekenProfielKnop(){
+  document.getElementById('profielNaam').textContent = actiefProfiel().naam;
+}
+
+function tekenProfielLijst(){
+  const lijst = document.getElementById('profielLijst');
+  lijst.innerHTML = '';
+  profielen.lijst.forEach(p=>{
+    const c = voortgangCijfers(p.id);
+    const rij = document.createElement('div');
+    rij.className = 'profiel-rij' + (p.id===profielen.actief ? ' actief' : '');
+    rij.innerHTML = `<span>${p.naam}</span><span class="cijfers">${c.gedaan ? c.gedaan+' vragen · '+c.percentage+'% goed' : 'nog niet geoefend'}</span>`;
+    rij.addEventListener('click', ()=> wisselProfiel(p.id));
+    lijst.appendChild(rij);
+  });
+}
+
+function wisselProfiel(id){
+  if(id===profielen.actief){ profielPanel.classList.remove('open'); return; }
+  profielen.actief = id;
+  schrijf(LS_PROFIELEN, profielen);
+  laadProfielData();
+  herstelPlek();
+  syncInstellingenVelden();
+  tekenProfielKnop();
+  tekenProfielLijst();
+  renderSectieKnoppen();
+  renderTabsBar();
+  render();
+  profielPanel.classList.remove('open');
+}
+
+document.getElementById('profielToggle').addEventListener('click', ()=>{
+  tekenProfielLijst();
+  profielPanel.classList.toggle('open');
+  document.getElementById('settingsPanel').classList.remove('open');
+});
+
+document.getElementById('profielNieuw').addEventListener('click', ()=>{
+  const naam = (prompt('Naam van de nieuwe oefenaar:') || '').trim();
+  if(!naam) return;
+  const id = 'p' + Date.now();
+  profielen.lijst.push({id, naam});
+  profielen.actief = id;
+  schrijf(LS_PROFIELEN, profielen);
+  laadProfielData();
+  herstelPlek();
+  syncInstellingenVelden();
+  tekenProfielKnop();
+  tekenProfielLijst();
+  renderSectieKnoppen();
+  renderTabsBar();
+  render();
+});
+
+document.getElementById('profielHernoem').addEventListener('click', ()=>{
+  const huidig = actiefProfiel();
+  const naam = (prompt('Nieuwe naam voor "'+huidig.naam+'":', huidig.naam) || '').trim();
+  if(!naam) return;
+  huidig.naam = naam;
+  schrijf(LS_PROFIELEN, profielen);
+  tekenProfielKnop();
+  tekenProfielLijst();
+});
+
+document.getElementById('profielWeg').addEventListener('click', ()=>{
+  if(profielen.lijst.length<2){
+    alert('Dit is het enige profiel. Maak eerst een tweede aan.');
+    return;
+  }
+  const huidig = actiefProfiel();
+  if(!confirm('Profiel "'+huidig.naam+'" verwijderen? De voortgang van deze persoon gaat weg.')) return;
+  try{
+    localStorage.removeItem(sleutelVoor(LS_PROGRESS, huidig.id));
+    localStorage.removeItem(sleutelVoor(LS_SETTINGS, huidig.id));
+    localStorage.removeItem(sleutelVoor(LS_PLEK, huidig.id));
+  }catch(e){}
+  profielen.lijst = profielen.lijst.filter(p=>p.id!==huidig.id);
+  profielen.actief = profielen.lijst[0].id;
+  schrijf(LS_PROFIELEN, profielen);
+  laadProfielData();
+  herstelPlek();
+  syncInstellingenVelden();
+  tekenProfielKnop();
+  tekenProfielLijst();
+  renderSectieKnoppen();
+  renderTabsBar();
+  render();
+});
+
+/* ---- Onthouden waar je gebleven bent ---- */
+
+function bewaarPlek(){
+  plek.sectie = huidigeSectie;
+  plek.mode = huidigeMode;
+  plek.woordCategorie = woordCategorieFilter;
+  plek.zinCategorie = zinCategorieFilter;
+  plek.zinNikud = zinNikudAan;
+  if(wflashPool.length && wflashPool[wflashIndex]) plek.wflashKey = keyWoord(wflashPool[wflashIndex]);
+  if(zinPool.length && zinPool[zinIndex]) plek.zinKey = keyZin(zinPool[zinIndex]);
+  if(tracePool.length && tracePool[traceIndex]) plek.traceKey = keyLetter(tracePool[traceIndex]);
+  schrijf(sleutelVoor(LS_PLEK), plek);
+}
+
+function herstelPlek(){
+  if(plek.woordCategorie && CATEGORIE_LABELS[plek.woordCategorie]) woordCategorieFilter = plek.woordCategorie;
+  else woordCategorieFilter = 'alle';
+  if(plek.zinCategorie && ZIN_CATEGORIE_LABELS[plek.zinCategorie]) zinCategorieFilter = plek.zinCategorie;
+  else zinCategorieFilter = 'alle';
+  zinNikudAan = (typeof plek.zinNikud === 'boolean') ? plek.zinNikud : true;
+  huidigeSectie = (plek.sectie && SECTIE_TABS[plek.sectie]) ? plek.sectie : 'letters';
+  const modes = SECTIE_TABS[huidigeSectie].map(t=>t.mode);
+  huidigeMode = (plek.mode && modes.includes(plek.mode)) ? plek.mode : modes[0];
+  // de decks worden opnieuw opgebouwd; die springen zelf terug naar het item
+  wflashPool = []; zinPool = []; tracePool = [];
+}
+
+function renderSectieKnoppen(){
+  Array.from(sectionSwitchEl.children).forEach(b=>
+    b.classList.toggle('active', b.dataset.sectie===huidigeSectie));
+}
+
+function syncInstellingenVelden(){
+  optSofit.checked = settings.sofit;
+  optRandomFont.checked = settings.randomFont;
+}
+
+document.getElementById('settingsToggle').addEventListener('click', ()=>{
+  document.getElementById('settingsPanel').classList.toggle('open');
+  profielPanel.classList.remove('open');
+});
+const optSofit = document.getElementById('optSofit');
+const optRandomFont = document.getElementById('optRandomFont');
+optSofit.checked = settings.sofit;
+optRandomFont.checked = settings.randomFont;
+optSofit.addEventListener('change', ()=>{ settings.sofit = optSofit.checked; bewaarSettings(); render(); });
+optRandomFont.addEventListener('change', ()=>{ settings.randomFont = optRandomFont.checked; bewaarSettings(); });
+document.getElementById('resetProgress').addEventListener('click', ()=>{
+  if(confirm('Weet je zeker dat je alle voortgang wilt wissen?')){
+    voortgang = {}; bewaarVoortgang(); render();
+  }
+});
+
+function render(){
+  Array.from(tabsEl.children).forEach(b=>b.classList.toggle('active', b.dataset.mode===huidigeMode));
+  main.innerHTML = '';
+  const renderers = {
+    flash: renderFlash, trace: renderTrace, quiz: renderQuiz, klank: renderKlank,
+    nikud: renderNikud, memory: renderMemory, fonts: renderFonts, progress: renderProgress,
+    wflash: renderWoordFlash, lezen: renderLezen, wquiz: renderWoordQuiz, wklank: renderWoordKlank,
+    zinnen: renderZinnen, bib: renderBibliotheek, stammen: renderStammen, wmemory: renderMemory
+  };
+  renderers[huidigeMode]();
+  bewaarPlek();
+}
+
+/* ============ FLASHCARDS ============ */
+
+let flashIndex = 0;
+let flashPool = [];
+let flashFontKey = 0;
+
+function renderFlash(){
+  flashPool = shuffle(huidigePool());
+  flashIndex = 0;
+  drawFlash();
+}
+
+function drawFlash(){
+  main.innerHTML = '';
+  const item = flashPool[flashIndex];
+  const font = settings.randomFont ? randomFont() : FONTS[0];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'card-surface flash-stage';
+
+  const count = document.createElement('div');
+  count.className = 'flash-count';
+  count.textContent = (flashIndex+1)+' / '+flashPool.length;
+  wrap.appendChild(count);
+
+  const card = document.createElement('div');
+  card.className = 'flashcard';
+  card.innerHTML = `
+    <div class="front">
+      <div class="glyph he" style="font-family:${font.family}">${item.letter}</div>
+      <div class="hint">tik om de naam te zien</div>
+    </div>
+    <div class="back">
+      <div class="naam">${item.naam}</div>
+      <div class="klank">${item.klank}</div>
+      <div class="klank">uitspraak: <strong>${item.trans}</strong></div>
+    </div>
+  `;
+  card.addEventListener('click', ()=> card.classList.toggle('flipped'));
+  wrap.appendChild(card);
+
+  const nav = document.createElement('div');
+  nav.className = 'flash-nav';
+  nav.innerHTML = `
+    <button class="nav-btn" id="fPrev">‹ Vorige</button>
+    <button class="nav-btn wide" id="fShuffle">🔀 Husselen</button>
+    <button class="nav-btn" id="fNext">Volgende ›</button>
+  `;
+  wrap.appendChild(nav);
+
+  main.appendChild(wrap);
+
+  const info = document.createElement('div');
+  info.className = 'muted';
+  info.style.padding = '0 6px';
+  info.textContent = settings.sofit
+    ? 'Set: alle 22 basisletters + 5 slotletters (sofit). Zet dit uit bij Instellingen om alleen de basisletters te oefenen.'
+    : 'Set: 22 basisletters. Zet slotletters aan bij Instellingen om ze mee te oefenen.';
+  main.appendChild(info);
+
+  document.getElementById('fPrev').onclick = ()=>{ flashIndex = (flashIndex-1+flashPool.length)%flashPool.length; drawFlash(); };
+  document.getElementById('fNext').onclick = ()=>{ flashIndex = (flashIndex+1)%flashPool.length; drawFlash(); };
+  document.getElementById('fShuffle').onclick = ()=>{ flashPool = shuffle(flashPool); flashIndex = 0; drawFlash(); };
+}
+
+/* ============ SCHRIJVEN / TRACEREN ============ */
+
+function keyLetter(it){ return 'letter-'+it.letter; }
+function keyWoord(it){ return 'woord-'+it.he; }
+function keyZin(z){ return 'zin-'+zinTekst(z); }
+
+let tracePool = [];
+let traceIndex = 0;
+let traceCtx = null;
+let traceShowGuide = true;
+let traceScore = {goed:0, fout:0};
+
+function renderTrace(){
+  if(!tracePool.length){
+    tracePool = shuffle(huidigePool());
+    traceIndex = 0;
+    if(plek.traceKey){
+      const i = tracePool.findIndex(l=>keyLetter(l)===plek.traceKey);
+      if(i>=0) traceIndex = i;
+    }
+  }
+  traceShowGuide = true;
+  traceScore = {goed:0, fout:0};
+  drawTraceMode();
+}
+
+function drawTraceMode(){
+  main.innerHTML = '';
+  const item = tracePool[traceIndex];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'trace-wrap';
+
+  const top = document.createElement('div');
+  top.className = 'trace-top';
+  top.innerHTML = `<div class="muted">${traceIndex+1} / ${tracePool.length} — trek <strong style="color:var(--accent)">${item.naam}</strong> na</div><div class="score-pill" id="traceScorePill">✓ ${traceScore.goed}  ✗ ${traceScore.fout}</div>`;
+  wrap.appendChild(top);
+
+  const stage = document.createElement('div');
+  stage.className = 'trace-stage';
+  stage.innerHTML = `
+    <div class="trace-guide he ${traceShowGuide?'':'hidden'}" id="traceGuide">${item.letter}</div>
+    <canvas id="traceCanvas"></canvas>
+  `;
+  wrap.appendChild(stage);
+
+  const controls = document.createElement('div');
+  controls.className = 'trace-controls';
+  controls.innerHTML = `
+    <button class="nav-btn" id="tClear">🧹 Wis</button>
+    <button class="nav-btn" id="tGuide">${traceShowGuide ? '🙈 Verberg voorbeeld' : '👁 Toon voorbeeld'}</button>
+    <button class="nav-btn" id="tCheck">✅ Test me</button>
+  `;
+  wrap.appendChild(controls);
+
+  const nav = document.createElement('div');
+  nav.className = 'flash-nav';
+  nav.innerHTML = `
+    <button class="nav-btn" id="tPrev">‹ Vorige</button>
+    <button class="nav-btn wide" id="tShuffle">🔀 Husselen</button>
+    <button class="nav-btn" id="tNext">Volgende ›</button>
+  `;
+  wrap.appendChild(nav);
+
+  const checkZone = document.createElement('div');
+  checkZone.id = 'traceCheckZone';
+  checkZone.className = 'trace-check';
+  wrap.appendChild(checkZone);
+
+  const tips = document.createElement('div');
+  tips.className = 'trace-tips';
+  tips.textContent = 'Vuistregel: Hebreeuws schrijf je van rechts naar links, en de meeste letters begin je linksboven en teken je naar beneden. Dit veld herkent je pen niet — het is bedoeld om de vorm in je hand te krijgen; vergelijk zelf met het voorbeeld en toets jezelf erna met de knop "Test me".';
+  wrap.appendChild(tips);
+
+  main.appendChild(wrap);
+
+  setupTraceCanvas();
+
+  document.getElementById('tClear').onclick = clearTraceCanvas;
+  document.getElementById('tGuide').onclick = ()=>{ traceShowGuide = !traceShowGuide; drawTraceMode(); };
+  document.getElementById('tCheck').onclick = ()=> startTraceCheck(item);
+  document.getElementById('tPrev').onclick = ()=>{ traceIndex = (traceIndex-1+tracePool.length)%tracePool.length; drawTraceMode(); };
+  document.getElementById('tNext').onclick = ()=>{ traceIndex = (traceIndex+1)%tracePool.length; drawTraceMode(); };
+  document.getElementById('tShuffle').onclick = ()=>{ tracePool = shuffle(tracePool); traceIndex = 0; drawTraceMode(); };
+}
+
+function setupTraceCanvas(){
+  const canvas = document.getElementById('traceCanvas');
+  if(!canvas) return;
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.round(rect.width * dpr));
+  canvas.height = Math.max(1, Math.round(rect.height * dpr));
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 7;
+  ctx.strokeStyle = '#e8b04b';
+  traceCtx = ctx;
+
+  let drawing = false;
+  let last = null;
+
+  function pos(e){
+    const r = canvas.getBoundingClientRect();
+    return {x: e.clientX - r.left, y: e.clientY - r.top};
+  }
+  function start(e){
+    drawing = true;
+    last = pos(e);
+    canvas.setPointerCapture(e.pointerId);
+    ctx.beginPath();
+    ctx.arc(last.x, last.y, ctx.lineWidth/2, 0, Math.PI*2);
+    ctx.fillStyle = ctx.strokeStyle;
+    ctx.fill();
+  }
+  function move(e){
+    if(!drawing) return;
+    const p = pos(e);
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    last = p;
+  }
+  function end(){
+    drawing = false;
+    last = null;
+  }
+  canvas.addEventListener('pointerdown', start);
+  canvas.addEventListener('pointermove', move);
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointerleave', end);
+  canvas.addEventListener('pointercancel', end);
+}
+
+function clearTraceCanvas(){
+  const canvas = document.getElementById('traceCanvas');
+  if(!canvas || !traceCtx) return;
+  traceCtx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function startTraceCheck(item){
+  const pool = huidigePool();
+  const foutieven = shuffle(pool.filter(l=>l.naam!==item.naam)).slice(0,3);
+  const opties = shuffle([item, ...foutieven]);
+  const zone = document.getElementById('traceCheckZone');
+  if(!zone) return;
+  zone.innerHTML = '';
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-bar';
+  feedback.id = 'traceFeedback';
+  zone.appendChild(feedback);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opties.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt.naam;
+    b.addEventListener('click', ()=>{
+      Array.from(grid.children).forEach(x=>x.disabled = true);
+      const goed = opt.naam === item.naam;
+      meldResultaat(keyLetter(item), goed);
+      if(goed){
+        traceScore.goed++;
+        b.classList.add('correct');
+        feedback.textContent = 'Goed zo!';
+        feedback.className = 'feedback-bar good';
+      }else{
+        traceScore.fout++;
+        b.classList.add('wrong');
+        feedback.textContent = 'Dit was '+item.naam;
+        feedback.className = 'feedback-bar bad';
+        Array.from(grid.children).find(x=>x.textContent===item.naam).classList.add('correct');
+      }
+      const pill = document.getElementById('traceScorePill');
+      if(pill) pill.textContent = '✓ '+traceScore.goed+'  ✗ '+traceScore.fout;
+    });
+    grid.appendChild(b);
+  });
+  zone.appendChild(grid);
+}
+
+/* ============ QUIZ: Letter -> Naam ============ */
+
+let quizScore = {goed:0, fout:0};
+let quizHuidig = null;
+
+function nieuweQuizVraag(){
+  const pool = huidigePool();
+  const item = gewogenKeuze(pool, keyLetter, quizHuidig ? keyLetter(quizHuidig.item) : null);
+  const font = settings.randomFont ? randomFont() : FONTS[0];
+  const foutieven = shuffle(pool.filter(l=>l.naam!==item.naam)).slice(0,3);
+  const opties = shuffle([item, ...foutieven]);
+  quizHuidig = {item, font, opties};
+  drawQuiz();
+}
+
+function renderQuiz(){
+  quizScore = {goed:0, fout:0};
+  nieuweQuizVraag();
+}
+
+function drawQuiz(){
+  main.innerHTML = '';
+  const {item, font, opties} = quizHuidig;
+
+  const top = document.createElement('div');
+  top.className = 'quiz-top';
+  top.innerHTML = `<div class="muted">Welke letter is dit?</div><div class="score-pill">✓ ${quizScore.goed}  ✗ ${quizScore.fout}</div>`;
+  main.appendChild(top);
+
+  const stage = document.createElement('div');
+  stage.className = 'quiz-stage';
+  stage.innerHTML = `<div class="quiz-glyph he" style="font-family:${font.family}">${item.letter}</div>`;
+  main.appendChild(stage);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-bar';
+  feedback.id = 'quizFeedback';
+  main.appendChild(feedback);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opties.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt.naam;
+    b.addEventListener('click', ()=> beantwoordQuiz(opt, item, b, grid));
+    grid.appendChild(b);
+  });
+  main.appendChild(grid);
+}
+
+function beantwoordQuiz(gekozen, correct, btn, grid){
+  Array.from(grid.children).forEach(b=>b.disabled = true);
+  const goed = gekozen.naam === correct.naam;
+  meldResultaat(keyLetter(correct), goed);
+  const fb = document.getElementById('quizFeedback');
+  if(goed){
+    quizScore.goed++;
+    btn.classList.add('correct');
+    fb.textContent = 'Goed zo — '+correct.naam+' (' + correct.klank + ')';
+    fb.className = 'feedback-bar good';
+  }else{
+    quizScore.fout++;
+    btn.classList.add('wrong');
+    Array.from(grid.children).find(b=>b.textContent===correct.naam).classList.add('correct');
+    fb.textContent = 'Dit was '+correct.naam+' — '+correct.klank;
+    fb.className = 'feedback-bar bad';
+  }
+  setTimeout(nieuweQuizVraag, 1100);
+}
+
+/* ============ KLANK -> LETTER (omgekeerd) ============ */
+
+let klankScore = {goed:0, fout:0};
+let klankHuidig = null;
+
+function nieuweKlankVraag(){
+  const pool = huidigePool();
+  const item = gewogenKeuze(pool, keyLetter, klankHuidig ? keyLetter(klankHuidig.item) : null);
+  const foutieven = shuffle(pool.filter(l=>l.naam!==item.naam)).slice(0,3);
+  const optiesRaw = shuffle([item, ...foutieven]);
+  const opties = optiesRaw.map(o=>({item:o, font: settings.randomFont ? randomFont() : FONTS[0]}));
+  klankHuidig = {item, opties};
+  drawKlank();
+}
+
+function renderKlank(){
+  klankScore = {goed:0, fout:0};
+  nieuweKlankVraag();
+}
+
+function drawKlank(){
+  main.innerHTML = '';
+  const {item, opties} = klankHuidig;
+
+  const top = document.createElement('div');
+  top.className = 'quiz-top';
+  top.innerHTML = `<div class="muted">Welke letter hoort hierbij?</div><div class="score-pill">✓ ${klankScore.goed}  ✗ ${klankScore.fout}</div>`;
+  main.appendChild(top);
+
+  const stage = document.createElement('div');
+  stage.className = 'quiz-stage';
+  stage.innerHTML = `<div class="quiz-question">${item.naam}</div><div class="quiz-sub">${item.klank}</div>`;
+  main.appendChild(stage);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-bar';
+  feedback.id = 'klankFeedback';
+  main.appendChild(feedback);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opties.forEach(({item:opt, font})=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn he';
+    b.style.fontFamily = font.family;
+    b.textContent = opt.letter;
+    b.addEventListener('click', ()=> beantwoordKlank(opt, item, b, grid));
+    grid.appendChild(b);
+  });
+  main.appendChild(grid);
+}
+
+function beantwoordKlank(gekozen, correct, btn, grid){
+  Array.from(grid.children).forEach(b=>b.disabled = true);
+  const goed = gekozen.letter === correct.letter;
+  meldResultaat(keyLetter(correct), goed);
+  const fb = document.getElementById('klankFeedback');
+  if(goed){
+    klankScore.goed++;
+    btn.classList.add('correct');
+    fb.textContent = 'Goed zo!';
+    fb.className = 'feedback-bar good';
+  }else{
+    klankScore.fout++;
+    btn.classList.add('wrong');
+    const juisteBtn = Array.from(grid.children)[opties_index(grid, correct)];
+    fb.textContent = 'Dit was de juiste letter';
+    fb.className = 'feedback-bar bad';
+  }
+  // markeer altijd de juiste knop groen
+  Array.from(grid.children).forEach((b, i)=>{
+    if(klankHuidig.opties[i].item.letter === correct.letter) b.classList.add('correct');
+  });
+  setTimeout(nieuweKlankVraag, 1100);
+}
+function opties_index(grid, correct){
+  return klankHuidig.opties.findIndex(o=>o.item.letter===correct.letter);
+}
+
+/* ============ NIKUD OEFENEN ============ */
+
+let nikudScore = {goed:0, fout:0};
+let nikudHuidig = null;
+let nikudModus = 'quiz'; // 'quiz' of 'tabel'
+
+function keyNikud(it){ return 'nikud-'+it.naam; }
+
+function nieuweNikudVraag(){
+  const item = gewogenKeuze(NIKUD, keyNikud, nikudHuidig ? keyNikud(nikudHuidig.item) : null);
+  const foutieven = shuffle(NIKUD.filter(n=>n.naam!==item.naam)).slice(0,3);
+  const opties = shuffle([item, ...foutieven]);
+  nikudHuidig = {item, opties};
+  drawNikudQuiz();
+}
+
+function renderNikud(){
+  nikudScore = {goed:0, fout:0};
+  main.innerHTML = '';
+
+  const toggleRow = document.createElement('div');
+  toggleRow.className = 'checkbox-row';
+  toggleRow.innerHTML = `
+    <button class="chip-toggle ${nikudModus==='quiz'?'on':''}" id="nkQuizBtn">❓ Oefenen</button>
+    <button class="chip-toggle ${nikudModus==='tabel'?'on':''}" id="nkTabelBtn">📖 Overzicht &amp; dagesj</button>
+  `;
+  main.appendChild(toggleRow);
+
+  const body = document.createElement('div');
+  body.id = 'nikudBody';
+  main.appendChild(body);
+
+  document.getElementById('nkQuizBtn').onclick = ()=>{ nikudModus='quiz'; renderNikud(); };
+  document.getElementById('nkTabelBtn').onclick = ()=>{ nikudModus='tabel'; renderNikud(); };
+
+  if(nikudModus==='quiz'){ nieuweNikudVraag(); }
+  else{ drawNikudTabel(); }
+}
+
+function drawNikudQuiz(){
+  const body = document.getElementById('nikudBody');
+  if(!body) return;
+  body.innerHTML = '';
+  const {item, opties} = nikudHuidig;
+  const font = settings.randomFont ? randomFont() : FONTS[0];
+
+  const top = document.createElement('div');
+  top.className = 'quiz-top';
+  top.innerHTML = `<div class="muted">Bet + dit teken — welke klank?</div><div class="score-pill">✓ ${nikudScore.goed}  ✗ ${nikudScore.fout}</div>`;
+  body.appendChild(top);
+
+  const stage = document.createElement('div');
+  stage.className = 'quiz-stage';
+  stage.innerHTML = `<div class="quiz-glyph he" style="font-family:${font.family}">${item.vb}</div><div class="quiz-sub">klinkt als "${item.vbklank}"</div>`;
+  body.appendChild(stage);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-bar';
+  feedback.id = 'nikudFeedback';
+  body.appendChild(feedback);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opties.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.innerHTML = `<div>${opt.naam}<br><span style="font-size:.72rem;font-weight:400;color:var(--text-dim)">${opt.klank}</span></div>`;
+    b.addEventListener('click', ()=> beantwoordNikud(opt, item, b, grid));
+    grid.appendChild(b);
+  });
+  body.appendChild(grid);
+}
+
+function beantwoordNikud(gekozen, correct, btn, grid){
+  Array.from(grid.children).forEach(b=>b.disabled = true);
+  const goed = gekozen.naam === correct.naam;
+  meldResultaat(keyNikud(correct), goed);
+  const fb = document.getElementById('nikudFeedback');
+  if(goed){
+    nikudScore.goed++;
+    btn.classList.add('correct');
+    fb.textContent = 'Goed zo — '+correct.naam;
+    fb.className = 'feedback-bar good';
+  }else{
+    nikudScore.fout++;
+    btn.classList.add('wrong');
+    fb.textContent = 'Dit was '+correct.naam;
+    fb.className = 'feedback-bar bad';
+  }
+  Array.from(grid.children).forEach((b,i)=>{
+    if(nikudHuidig.opties[i].naam===correct.naam) b.classList.add('correct');
+  });
+  setTimeout(nieuweNikudVraag, 1300);
+}
+
+function drawNikudTabel(){
+  const body = document.getElementById('nikudBody');
+  body.innerHTML = '';
+
+  const t1 = document.createElement('div');
+  t1.className = 'section-title';
+  t1.textContent = 'Klinkertekens (nikud)';
+  body.appendChild(t1);
+
+  const grid = document.createElement('div');
+  grid.className = 'nikud-grid';
+  NIKUD.forEach(n=>{
+    const row = document.createElement('div');
+    row.className = 'nikud-item';
+    row.innerHTML = `
+      <div class="glyph he">${n.vb}</div>
+      <div class="body">
+        <div><strong>${n.naam}</strong></div>
+        <div class="k">${n.klank}</div>
+      </div>
+    `;
+    grid.appendChild(row);
+  });
+  body.appendChild(grid);
+
+  const t2 = document.createElement('div');
+  t2.className = 'section-title';
+  t2.textContent = 'Overige tekens';
+  body.appendChild(t2);
+
+  const grid2 = document.createElement('div');
+  grid2.className = 'nikud-grid';
+  DIAKRIETEN.forEach(d=>{
+    const row = document.createElement('div');
+    row.className = 'nikud-item';
+    row.innerHTML = `
+      <div class="glyph he">${d.teken}</div>
+      <div class="body">
+        <div><strong>${d.naam}</strong></div>
+        <div class="k">${d.klank}</div>
+      </div>
+    `;
+    grid2.appendChild(row);
+  });
+  body.appendChild(grid2);
+}
+
+/* ============ WOORDKAARTEN ============ */
+
+let wflashIndex = 0;
+let wflashPool = [];
+let wflashFilterBij = null;
+let wflashAntwoord = '';
+let wflashUitslag = null;   // true/false, of null als er nog niet nagekeken is
+
+function renderWoordFlash(){
+  if(!wflashPool.length || wflashFilterBij!==woordCategorieFilter){
+    wflashPool = shuffle(woordenPool());
+    wflashFilterBij = woordCategorieFilter;
+    wflashIndex = 0;
+    if(plek.wflashKey){
+      const i = wflashPool.findIndex(w=>keyWoord(w)===plek.wflashKey);
+      if(i>=0) wflashIndex = i;
+    }
+    wflashAntwoord = '';
+    wflashUitslag = null;
+  }
+  drawWoordFlash();
+}
+
+function wflashVolgende(stap){
+  wflashIndex = (wflashIndex + stap + wflashPool.length) % wflashPool.length;
+  wflashAntwoord = '';
+  wflashUitslag = null;
+  drawWoordFlash();
+}
+
+function drawWoordFlash(){
+  main.innerHTML = '';
+  renderCategorieChips(main, renderWoordFlash);
+
+  if(wflashPool.length===0){
+    const empty = document.createElement('div');
+    empty.className = 'card-surface';
+    empty.innerHTML = '<div class="muted">Geen woorden in deze categorie.</div>';
+    main.appendChild(empty);
+    return;
+  }
+  if(wflashIndex >= wflashPool.length) wflashIndex = 0;
+  const item = wflashPool[wflashIndex];
+  const font = settings.randomFont ? randomFont() : FONTS[0];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'card-surface flash-stage';
+
+  const count = document.createElement('div');
+  count.className = 'flash-count';
+  count.textContent = (wflashIndex+1)+' / '+wflashPool.length+'   ·   '+CATEGORIE_LABELS[item.categorie];
+  wrap.appendChild(count);
+
+  const card = document.createElement('div');
+  card.className = 'flashcard word' + (wflashUitslag!==null ? ' flipped' : '');
+  card.innerHTML = `
+    <div class="front">
+      <div class="glyph he" style="font-family:${font.family}">${item.he}</div>
+      <div class="hint">typ hieronder de betekenis, of tik om te kijken</div>
+    </div>
+    <div class="back">
+      <div class="naam">${item.nl}</div>
+      <div class="klank">uitspraak: <strong>${item.trans}</strong></div>
+      ${item.notitie ? `<div class="klank">${item.notitie}</div>` : ''}
+    </div>
+  `;
+  card.addEventListener('click', ()=> card.classList.toggle('flipped'));
+  wrap.appendChild(card);
+
+  main.appendChild(wrap);
+
+  // eerst zelf de betekenis opschrijven, dan pas nakijken
+  const controle = document.createElement('div');
+  controle.className = 'lees-controle';
+  controle.innerHTML = '<div class="lees-label">Wat betekent dit woord?</div>';
+
+  const rij = document.createElement('div');
+  rij.className = 'lees-rij';
+  const veld = document.createElement('input');
+  veld.type = 'text';
+  veld.className = 'lees-veld';
+  veld.placeholder = 'typ de betekenis';
+  veld.autocomplete = 'off';
+  veld.spellcheck = false;
+  veld.value = wflashAntwoord;
+  veld.addEventListener('input', ()=>{ wflashAntwoord = veld.value; });
+
+  const knop = document.createElement('button');
+  knop.className = 'nav-btn';
+  knop.textContent = '✅ Nakijken';
+
+  function nakijken(){
+    const tekst = veld.value.trim();
+    if(!tekst){ veld.focus(); return; }
+    wflashAntwoord = tekst;
+    wflashUitslag = betekenisGelijk(tekst, item.nl);
+    meldResultaat(keyWoord(item), wflashUitslag);
+    drawWoordFlash();
+  }
+  knop.addEventListener('click', nakijken);
+  veld.addEventListener('keydown', e=>{ if(e.key==='Enter') nakijken(); });
+
+  rij.appendChild(veld);
+  rij.appendChild(knop);
+  controle.appendChild(rij);
+
+  if(wflashUitslag!==null){
+    const uit = document.createElement('div');
+    uit.className = 'lees-uitslag ' + (wflashUitslag ? 'goed' : 'deels');
+    uit.innerHTML = wflashUitslag
+      ? '<strong>Goed!</strong> ' + item.nl
+      : '<strong>Nog niet.</strong> Het betekent: <span class="lees-juist">' + item.nl + '</span>';
+    controle.appendChild(uit);
+  }
+  main.appendChild(controle);
+
+  const nav = document.createElement('div');
+  nav.className = 'flash-nav';
+  nav.innerHTML = `
+    <button class="nav-btn" id="wfPrev">‹ Vorige</button>
+    <button class="nav-btn wide" id="wfShuffle">🔀 Husselen</button>
+    <button class="nav-btn" id="wfNext">Volgende ›</button>
+  `;
+  main.appendChild(nav);
+
+  document.getElementById('wfPrev').onclick = ()=> wflashVolgende(-1);
+  document.getElementById('wfNext').onclick = ()=> wflashVolgende(1);
+  document.getElementById('wfShuffle').onclick = ()=>{
+    wflashPool = shuffle(wflashPool); wflashIndex = 0;
+    wflashAntwoord = ''; wflashUitslag = null;
+    drawWoordFlash();
+  };
+  bewaarPlek();
+}
+
+/* ============ LEZEN (woorden + zinnen door elkaar) ============ */
+
+function leesPool(){
+  const woorden = WOORDEN.map(w=>({soort:'woord', he:w.he, trans:w.trans, nl:w.nl, key:keyWoord(w)}));
+  const zinnen = ZINNEN.map(z=>({soort:'zin', he:zinTekst(z), trans:z.trans, nl:z.nl, key:keyZin(z)}));
+  return woorden.concat(zinnen);
+}
+
+let leesHuidig = null;
+let leesScore = {goed:0, fout:0};
+let leesToonAntwoord = false;
+let leesAntwoord = '';
+let leesUitslag = null;
+
+function nieuweLeesVraag(){
+  const pool = leesPool();
+  const item = gewogenKeuze(pool, p=>p.key, leesHuidig ? leesHuidig.item.key : null);
+  const font = settings.randomFont ? randomFont() : FONTS[0];
+  leesHuidig = {item, font};
+  leesToonAntwoord = false;
+  leesAntwoord = '';
+  leesUitslag = null;
+  drawLezen();
+}
+
+function renderLezen(){
+  leesScore = {goed:0, fout:0};
+  nieuweLeesVraag();
+}
+
+function drawLezen(){
+  main.innerHTML = '';
+  const {item, font} = leesHuidig;
+
+  const top = document.createElement('div');
+  top.className = 'quiz-top';
+  top.innerHTML = `<div class="muted">Lees dit hardop, controleer daarna</div><div class="score-pill" id="leesScorePill">✓ ${leesScore.goed}  ✗ ${leesScore.fout}</div>`;
+  main.appendChild(top);
+
+  const stage = document.createElement('div');
+  stage.className = 'quiz-stage';
+  let stageHtml = `<div class="quiz-glyph word he" style="font-family:${font.family}">${item.he}</div>`;
+  if(leesToonAntwoord){
+    stageHtml += `<div class="quiz-sub">${item.trans}</div><div class="quiz-sub" style="color:var(--accent);font-weight:700;margin-top:6px;">${item.nl}</div>`;
+  }
+  stage.innerHTML = stageHtml;
+  main.appendChild(stage);
+
+  main.appendChild(maakLeesControle(item.trans, leesAntwoord,
+    tekst=>{ leesAntwoord = tekst; },
+    uitslag=>{
+      leesUitslag = uitslag;
+      if(uitslag.alles) leesScore.goed++; else leesScore.fout++;
+      meldResultaat(item.key, uitslag.alles);
+      drawLezen();
+    },
+    leesUitslag));
+
+  const controls = document.createElement('div');
+  controls.className = 'trace-controls';
+  controls.innerHTML = `
+    <button class="nav-btn" id="lReveal">${leesToonAntwoord ? '🙈 Verberg' : '👁 Toon uitspraak & betekenis'}</button>
+    <button class="nav-btn" id="lCheck">❓ Wat betekent het?</button>
+    <button class="nav-btn" id="lNext">Volgende ›</button>
+  `;
+  main.appendChild(controls);
+
+  const checkZone = document.createElement('div');
+  checkZone.id = 'leesCheckZone';
+  checkZone.className = 'trace-check';
+  main.appendChild(checkZone);
+
+  document.getElementById('lReveal').onclick = ()=>{ leesToonAntwoord = !leesToonAntwoord; drawLezen(); };
+  document.getElementById('lCheck').onclick = ()=> startLeesCheck(item);
+  document.getElementById('lNext').onclick = nieuweLeesVraag;
+}
+
+function startLeesCheck(item){
+  const pool = leesPool().filter(p=>p.soort===item.soort);
+  const foutieven = shuffle(pool.filter(p=>p.nl!==item.nl)).slice(0,3);
+  const opties = shuffle([item, ...foutieven]);
+  const zone = document.getElementById('leesCheckZone');
+  if(!zone) return;
+  zone.innerHTML = '';
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-bar';
+  feedback.id = 'leesFeedback';
+  zone.appendChild(feedback);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opties.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt.nl;
+    b.addEventListener('click', ()=>{
+      Array.from(grid.children).forEach(x=>x.disabled = true);
+      const goed = opt.nl === item.nl;
+      meldResultaat(item.key, goed);
+      if(goed){
+        leesScore.goed++;
+        b.classList.add('correct');
+        feedback.textContent = 'Goed zo!';
+        feedback.className = 'feedback-bar good';
+      }else{
+        leesScore.fout++;
+        b.classList.add('wrong');
+        feedback.textContent = 'Dit betekent: '+item.nl;
+        feedback.className = 'feedback-bar bad';
+        Array.from(grid.children).find(x=>x.textContent===item.nl).classList.add('correct');
+      }
+      const pill = document.getElementById('leesScorePill');
+      if(pill) pill.textContent = '✓ '+leesScore.goed+'  ✗ '+leesScore.fout;
+    });
+    grid.appendChild(b);
+  });
+  zone.appendChild(grid);
+}
+
+/* ============ QUIZ: Woord -> Betekenis ============ */
+
+let wquizScore = {goed:0, fout:0};
+let wquizHuidig = null;
+
+function nieuweWoordQuizVraag(){
+  const pool = woordenPool();
+  const vorige = wquizHuidig ? keyWoord(wquizHuidig.item) : null;
+  wquizHuidig = null;
+  if(pool.length>=4){
+    const item = gewogenKeuze(pool, keyWoord, vorige);
+    const font = settings.randomFont ? randomFont() : FONTS[0];
+    const foutieven = shuffle(pool.filter(w=>w.nl!==item.nl)).slice(0,3);
+    const opties = shuffle([item, ...foutieven]);
+    wquizHuidig = {item, font, opties};
+  }
+  drawWoordQuiz();
+}
+
+function renderWoordQuiz(){
+  wquizScore = {goed:0, fout:0};
+  nieuweWoordQuizVraag();
+}
+
+function drawWoordQuiz(){
+  main.innerHTML = '';
+  renderCategorieChips(main, renderWoordQuiz);
+
+  if(!wquizHuidig){
+    const warn = document.createElement('div');
+    warn.className = 'card-surface';
+    warn.innerHTML = '<div class="muted">Kies een categorie met minstens 4 woorden.</div>';
+    main.appendChild(warn);
+    return;
+  }
+
+  const {item, font, opties} = wquizHuidig;
+
+  const top = document.createElement('div');
+  top.className = 'quiz-top';
+  top.innerHTML = `<div class="muted">Wat betekent dit woord?</div><div class="score-pill">✓ ${wquizScore.goed}  ✗ ${wquizScore.fout}</div>`;
+  main.appendChild(top);
+
+  const stage = document.createElement('div');
+  stage.className = 'quiz-stage';
+  stage.innerHTML = `<div class="quiz-glyph word he" style="font-family:${font.family}">${item.he}</div><div class="quiz-sub">${item.trans}</div>`;
+  main.appendChild(stage);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-bar';
+  feedback.id = 'wquizFeedback';
+  main.appendChild(feedback);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opties.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt.nl;
+    b.addEventListener('click', ()=> beantwoordWoordQuiz(opt, item, b, grid));
+    grid.appendChild(b);
+  });
+  main.appendChild(grid);
+}
+
+function beantwoordWoordQuiz(gekozen, correct, btn, grid){
+  Array.from(grid.children).forEach(b=>b.disabled = true);
+  const goed = gekozen.nl === correct.nl;
+  meldResultaat(keyWoord(correct), goed);
+  const fb = document.getElementById('wquizFeedback');
+  if(goed){
+    wquizScore.goed++;
+    btn.classList.add('correct');
+    fb.textContent = 'Goed zo — '+correct.trans;
+    fb.className = 'feedback-bar good';
+  }else{
+    wquizScore.fout++;
+    btn.classList.add('wrong');
+    Array.from(grid.children).find(b=>b.textContent===correct.nl).classList.add('correct');
+    fb.textContent = 'Dit was "'+correct.nl+'" ('+correct.trans+')';
+    fb.className = 'feedback-bar bad';
+  }
+  setTimeout(nieuweWoordQuizVraag, 1300);
+}
+
+/* ============ QUIZ: Betekenis -> Woord (omgekeerd) ============ */
+
+let wklankScore = {goed:0, fout:0};
+let wklankHuidig = null;
+
+function nieuweWoordKlankVraag(){
+  const pool = woordenPool();
+  const vorige = wklankHuidig ? keyWoord(wklankHuidig.item) : null;
+  wklankHuidig = null;
+  if(pool.length>=4){
+    const item = gewogenKeuze(pool, keyWoord, vorige);
+    const foutieven = shuffle(pool.filter(w=>w.nl!==item.nl)).slice(0,3);
+    const optiesRaw = shuffle([item, ...foutieven]);
+    const opties = optiesRaw.map(o=>({item:o, font: settings.randomFont ? randomFont() : FONTS[0]}));
+    wklankHuidig = {item, opties};
+  }
+  drawWoordKlank();
+}
+
+function renderWoordKlank(){
+  wklankScore = {goed:0, fout:0};
+  nieuweWoordKlankVraag();
+}
+
+function drawWoordKlank(){
+  main.innerHTML = '';
+  renderCategorieChips(main, renderWoordKlank);
+
+  if(!wklankHuidig){
+    const warn = document.createElement('div');
+    warn.className = 'card-surface';
+    warn.innerHTML = '<div class="muted">Kies een categorie met minstens 4 woorden.</div>';
+    main.appendChild(warn);
+    return;
+  }
+
+  const {item, opties} = wklankHuidig;
+
+  const top = document.createElement('div');
+  top.className = 'quiz-top';
+  top.innerHTML = `<div class="muted">Welk woord betekent dit?</div><div class="score-pill">✓ ${wklankScore.goed}  ✗ ${wklankScore.fout}</div>`;
+  main.appendChild(top);
+
+  const stage = document.createElement('div');
+  stage.className = 'quiz-stage';
+  stage.innerHTML = `<div class="quiz-question">${item.nl}</div>`;
+  main.appendChild(stage);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-bar';
+  feedback.id = 'wklankFeedback';
+  main.appendChild(feedback);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opties.forEach(({item:opt, font})=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn he word';
+    b.style.fontFamily = font.family;
+    b.textContent = opt.he;
+    b.addEventListener('click', ()=> beantwoordWoordKlank(opt, item, b, grid));
+    grid.appendChild(b);
+  });
+  main.appendChild(grid);
+}
+
+function beantwoordWoordKlank(gekozen, correct, btn, grid){
+  Array.from(grid.children).forEach(b=>b.disabled = true);
+  const goed = gekozen.he === correct.he;
+  meldResultaat(keyWoord(correct), goed);
+  const fb = document.getElementById('wklankFeedback');
+  if(goed){
+    wklankScore.goed++;
+    btn.classList.add('correct');
+    fb.textContent = 'Goed zo!';
+    fb.className = 'feedback-bar good';
+  }else{
+    wklankScore.fout++;
+    btn.classList.add('wrong');
+    fb.textContent = 'Dit was het juiste woord';
+    fb.className = 'feedback-bar bad';
+  }
+  Array.from(grid.children).forEach((b,i)=>{
+    if(wklankHuidig.opties[i].item.he === correct.he) b.classList.add('correct');
+  });
+  setTimeout(nieuweWoordKlankVraag, 1300);
+}
+
+/* ============ ZINNETJES ============ */
+
+let zinIndex = 0;
+let zinPool = [];
+let zinGetapt = null;
+let zinToonUitspraak = false;
+let zinToonVertaling = false;
+let zinCategorieFilter = 'alle';
+let zinNikudAan = true;
+let zinAntwoord = '';
+let zinUitslag = null;   // {perWoord, goed, totaal, alles} of null
+
+function zinnenPool(){
+  return zinCategorieFilter==='alle' ? ZINNEN : ZINNEN.filter(z=>z.categorie===zinCategorieFilter);
+}
+
+function zonderNikud(t){ return String(t).replace(/[֑-ׇ]/g,''); }
+
+let zinFilterBij = null;
+
+function renderZinnen(){
+  if(!zinPool.length || zinFilterBij!==zinCategorieFilter){
+    zinPool = shuffle(zinnenPool());
+    zinFilterBij = zinCategorieFilter;
+    zinIndex = 0;
+    if(plek.zinKey){
+      const i = zinPool.findIndex(z=>keyZin(z)===plek.zinKey);
+      if(i>=0) zinIndex = i;
+    }
+    nieuweZinStand();
+  }
+  drawZinnen();
+}
+
+function nieuweZinStand(){
+  zinGetapt = null;
+  zinToonUitspraak = false;
+  zinToonVertaling = false;
+  zinAntwoord = '';
+  zinUitslag = null;
+}
+
+function drawZinnen(){
+  main.innerHTML = '';
+
+  // categoriekeuze
+  const catRij = document.createElement('div');
+  catRij.className = 'checkbox-row';
+  ZIN_CATEGORIEEN.forEach(cat=>{
+    const chip = document.createElement('button');
+    chip.className = 'chip-toggle' + (zinCategorieFilter===cat ? ' on' : '');
+    chip.textContent = ZIN_CATEGORIE_LABELS[cat];
+    chip.addEventListener('click', ()=>{ zinCategorieFilter = cat; renderZinnen(); });
+    catRij.appendChild(chip);
+  });
+  main.appendChild(catRij);
+
+  if(zinPool.length===0){
+    const leeg = document.createElement('div');
+    leeg.className = 'card-surface';
+    leeg.innerHTML = '<div class="muted">Nog geen zinnen in deze categorie.</div>';
+    main.appendChild(leeg);
+    return;
+  }
+
+  const zin = zinPool[zinIndex];
+
+  const top = document.createElement('div');
+  top.className = 'trace-top';
+  top.innerHTML = `<div class="muted">${zinIndex+1} / ${zinPool.length} — ${ZIN_CATEGORIE_LABELS[zin.categorie] || ''}</div>`
+    + `<button class="chip-toggle ${zinNikudAan?'on':''}" id="zNikud">${zinNikudAan ? 'nikud aan' : 'nikud uit'}</button>`;
+  main.appendChild(top);
+
+  const card = document.createElement('div');
+  card.className = 'zin-card';
+
+  const tekstEl = document.createElement('div');
+  tekstEl.className = 'zin-text he';
+  const gloss = document.createElement('div');
+  gloss.className = 'zin-gloss';
+  gloss.textContent = zinGetapt ? (zinGetapt.he + ' = ' + zinGetapt.nl) : '';
+
+  const spans = [];
+  zin.woorden.forEach((w, i)=>{
+    const span = document.createElement('span');
+    span.className = 'zin-word';
+    span.textContent = zinNikudAan ? w.he : zonderNikud(w.he);
+    // tikken werkt het woord bij zonder de hele pagina opnieuw te tekenen,
+    // anders ben je je ingetypte antwoord kwijt
+    span.addEventListener('click', ()=>{
+      zinGetapt = (zinGetapt===w ? null : w);
+      spans.forEach((s,j)=> s.classList.toggle('tapped', zin.woorden[j]===zinGetapt));
+      gloss.textContent = zinGetapt ? (zinGetapt.he + ' = ' + zinGetapt.nl) : '';
+    });
+    spans.push(span);
+    tekstEl.appendChild(span);
+    if(i < zin.woorden.length-1) tekstEl.appendChild(document.createTextNode(' '));
+  });
+  if(zinGetapt) spans.forEach((s,j)=> s.classList.toggle('tapped', zin.woorden[j]===zinGetapt));
+  if(zinUitslag) spans.forEach((s,j)=> s.classList.add(zinUitslag.perWoord[j] ? 'ok' : 'mis'));
+
+  card.appendChild(tekstEl);
+  card.appendChild(gloss);
+
+  if(zinToonUitspraak){
+    const tr = document.createElement('div');
+    tr.className = 'zin-trans';
+    tr.textContent = zin.trans;
+    card.appendChild(tr);
+  }
+  if(zinToonVertaling){
+    const nl = document.createElement('div');
+    nl.className = 'zin-meaning';
+    nl.textContent = zin.nl;
+    card.appendChild(nl);
+  }
+  main.appendChild(card);
+
+  // fonetische controle: eerst zelf opschrijven, dan pas nakijken
+  main.appendChild(maakLeesControle(zin.trans, zinAntwoord,
+    tekst=>{ zinAntwoord = tekst; },
+    uitslag=>{
+      zinUitslag = uitslag;
+      meldResultaat(keyZin(zin), uitslag.alles);
+      drawZinnen();
+    },
+    zinUitslag, zin.trans));
+
+  const controls = document.createElement('div');
+  controls.className = 'trace-controls';
+  controls.innerHTML = `
+    <button class="nav-btn" id="zUitspraak">${zinToonUitspraak ? '🙈 Verberg uitspraak' : '📝 Toon uitspraak'}</button>
+    <button class="nav-btn" id="zVertaling">${zinToonVertaling ? '🙈 Verberg vertaling' : '💬 Toon vertaling'}</button>
+  `;
+  main.appendChild(controls);
+
+  const nav = document.createElement('div');
+  nav.className = 'flash-nav';
+  nav.innerHTML = `
+    <button class="nav-btn" id="zPrev">‹ Vorige</button>
+    <button class="nav-btn wide" id="zShuffle">🔀 Husselen</button>
+    <button class="nav-btn" id="zNext">Volgende ›</button>
+  `;
+  main.appendChild(nav);
+
+  if(zinIndex===0){
+    const uitleg = document.createElement('div');
+    uitleg.className = 'zinsbouw-card';
+    uitleg.innerHTML = 'Drie dingen die Hebreeuwse zinsbouw anders maken dan Nederlands: '
+      + '<strong>1)</strong> in de tegenwoordige tijd bestaat er geen los werkwoord voor "zijn" — "אני עייף" is letterlijk "ik moe" en betekent "ik ben moe". '
+      + '<strong>2)</strong> het lidwoord "de/het" is geen los woordje maar een voorvoegsel הַ- vastgeplakt aan het zelfstandig naamwoord, bijv. הַבַּיִת = het huis. '
+      + '<strong>3)</strong> een bijvoeglijk naamwoord komt ÁCHTER het zelfstandig naamwoord: בַּיִת גָּדוֹל = een groot huis (letterlijk "huis groot").';
+    main.appendChild(uitleg);
+  }
+
+  document.getElementById('zNikud').onclick = ()=>{ zinNikudAan = !zinNikudAan; drawZinnen(); };
+  document.getElementById('zUitspraak').onclick = ()=>{ zinToonUitspraak = !zinToonUitspraak; drawZinnen(); };
+  document.getElementById('zVertaling').onclick = ()=>{ zinToonVertaling = !zinToonVertaling; drawZinnen(); };
+  document.getElementById('zPrev').onclick = ()=>{ zinIndex=(zinIndex-1+zinPool.length)%zinPool.length; nieuweZinStand(); drawZinnen(); };
+  document.getElementById('zNext').onclick = ()=>{ zinIndex=(zinIndex+1)%zinPool.length; nieuweZinStand(); drawZinnen(); };
+  document.getElementById('zShuffle').onclick = ()=>{ zinPool = shuffle(zinPool); zinIndex=0; nieuweZinStand(); drawZinnen(); };
+  bewaarPlek();
+}
+
+/* Het antwoordveld + de uitslag. Wordt door Zinnetjes én Lezen gebruikt. */
+function maakLeesControle(juisteUitspraak, huidigeTekst, opTypen, opControle, uitslag){
+  const vak = document.createElement('div');
+  vak.className = 'lees-controle';
+
+  const label = document.createElement('div');
+  label.className = 'lees-label';
+  label.textContent = 'Schrijf eerst zelf op hoe je het leest:';
+  vak.appendChild(label);
+
+  const rij = document.createElement('div');
+  rij.className = 'lees-rij';
+
+  const veld = document.createElement('input');
+  veld.type = 'text';
+  veld.className = 'lees-veld';
+  veld.placeholder = 'bijv. sjalom, ma sjlomcha';
+  veld.autocapitalize = 'none';
+  veld.autocomplete = 'off';
+  veld.spellcheck = false;
+  veld.value = huidigeTekst || '';
+  veld.addEventListener('input', ()=> opTypen(veld.value));
+
+  const knop = document.createElement('button');
+  knop.className = 'nav-btn';
+  knop.textContent = '✅ Nakijken';
+
+  function nakijken(){
+    const tekst = veld.value.trim();
+    if(!tekst){
+      veld.focus();
+      return;
+    }
+    opTypen(tekst);
+    opControle(fonetischVergelijk(tekst, juisteUitspraak));
+  }
+  knop.addEventListener('click', nakijken);
+  veld.addEventListener('keydown', e=>{ if(e.key==='Enter') nakijken(); });
+
+  rij.appendChild(veld);
+  rij.appendChild(knop);
+  vak.appendChild(rij);
+
+  if(uitslag){
+    const uit = document.createElement('div');
+    uit.className = 'lees-uitslag ' + (uitslag.alles ? 'goed' : 'deels');
+    uit.innerHTML = uitslag.alles
+      ? `<strong>Goed gelezen — ${uitslag.goed}/${uitslag.totaal} woorden.</strong>`
+      : `<strong>${uitslag.goed} van de ${uitslag.totaal} woorden goed.</strong> De juiste uitspraak: <span class="lees-juist">${juisteUitspraak}</span>`;
+    vak.appendChild(uit);
+
+    const toelichting = document.createElement('div');
+    toelichting.className = 'lees-toelichting';
+    toelichting.textContent = 'Kleine verschillen tellen als goed: sj/sh, j/y en oe/u mogen door elkaar, en één typefout per woord wordt vergeven.';
+    vak.appendChild(toelichting);
+  }
+
+  return vak;
+}
+
+/* ============ BIBLIOTHEEK ============ */
+
+let bibZoek = '';
+let bibNiveau = 'alle';
+
+function niveauVan(w){ return w.niveau || 1; }
+
+function bibTreffers(){
+  const zoek = bibZoek.trim().toLowerCase();
+  return WOORDEN.filter(w=>{
+    if(bibNiveau!=='alle' && String(niveauVan(w))!==bibNiveau) return false;
+    if(!zoek) return true;
+    return w.he.indexOf(zoek)>=0
+      || w.trans.toLowerCase().indexOf(zoek)>=0
+      || w.nl.toLowerCase().indexOf(zoek)>=0
+      || (CATEGORIE_LABELS[w.categorie]||'').toLowerCase().indexOf(zoek)>=0;
+  });
+}
+
+function stipVoor(w){
+  const st = voortgang[keyWoord(w)];
+  if(!st) return '';
+  const totaal = st.correct + st.wrong;
+  if(totaal>=3 && st.correct/totaal>=0.8) return 'beheerst';
+  return 'bezig';
+}
+
+function renderBibliotheek(){
+  main.innerHTML = '';
+
+  const zoekveld = document.createElement('input');
+  zoekveld.type = 'search';
+  zoekveld.className = 'bib-zoek';
+  zoekveld.placeholder = 'Zoek op Hebreeuws, uitspraak of betekenis…';
+  zoekveld.value = bibZoek;
+  zoekveld.autocomplete = 'off';
+  main.appendChild(zoekveld);
+
+  const niveaus = document.createElement('div');
+  niveaus.className = 'checkbox-row';
+  [['alle','Alle niveaus'],['1','Niveau 1 — kern'],['2','Niveau 2 — uitbreiding']].forEach(([sleutel,label])=>{
+    const chip = document.createElement('button');
+    chip.className = 'chip-toggle' + (bibNiveau===sleutel ? ' on' : '');
+    chip.textContent = label;
+    chip.addEventListener('click', ()=>{ bibNiveau = sleutel; renderBibliotheek(); });
+    niveaus.appendChild(chip);
+  });
+  main.appendChild(niveaus);
+
+  const telling = document.createElement('div');
+  telling.className = 'bib-telling';
+  main.appendChild(telling);
+
+  const lijst = document.createElement('div');
+  lijst.className = 'card-surface';
+  main.appendChild(lijst);
+
+  function tekenLijst(){
+    const treffers = bibTreffers();
+    telling.textContent = treffers.length + ' woorden · '
+      + treffers.filter(w=>stipVoor(w)==='beheerst').length + ' beheerst · '
+      + treffers.filter(w=>stipVoor(w)==='bezig').length + ' mee bezig'
+      + (WOORDEN.length!==treffers.length ? '   (van ' + WOORDEN.length + ' in totaal)' : '');
+    lijst.innerHTML = '';
+    if(!treffers.length){
+      lijst.innerHTML = '<div class="muted">Geen woord gevonden. Probeer een ander zoekwoord.</div>';
+      return;
+    }
+    treffers.forEach(w=>{
+      const rij = document.createElement('div');
+      rij.className = 'bib-rij';
+      rij.innerHTML = `
+        <div class="bib-stip ${stipVoor(w)}"></div>
+        <div class="bib-he he">${w.he}</div>
+        <div class="bib-tekst">
+          <div class="nl">${w.nl}</div>
+          <div class="tr">${w.trans}</div>
+        </div>
+        <div class="bib-cat">${CATEGORIE_LABELS[w.categorie]||''}</div>
+      `;
+      if(w.notitie) rij.title = w.notitie;
+      lijst.appendChild(rij);
+    });
+  }
+  tekenLijst();
+
+  const uitleg = document.createElement('div');
+  uitleg.className = 'muted';
+  uitleg.style.padding = '10px 4px 0';
+  uitleg.textContent = 'Groene stip = beheerst (minstens 3 keer geoefend en 80% goed). Oranje = mee bezig. Grijs = nog niet geoefend. De woordenlijst groeit; nieuw materiaal komt in materiaal.js.';
+  main.appendChild(uitleg);
+
+  // alleen de lijst opnieuw tekenen, zodat het zoekveld de focus houdt
+  zoekveld.addEventListener('input', ()=>{ bibZoek = zoekveld.value; tekenLijst(); });
+}
+
+/* ============ STAMMEN (WORTELS) ============ */
+
+let stammenModus = 'overzicht'; // 'overzicht' of 'oefenen'
+let stamGekozen = ROOTS[0];
+let stamQuizScore = {goed:0, fout:0};
+let stamQuizHuidig = null;
+
+function renderStammen(){
+  main.innerHTML = '';
+
+  const intro = document.createElement('div');
+  intro.className = 'zinsbouw-card';
+  intro.textContent = 'De meeste Hebreeuwse werkwoorden en veel zelfstandige naamwoorden zijn opgebouwd rond een stam (שורש) van 3 medeklinkers. Die kern blijft steeds hetzelfde, alleen de klinkers en voor-/achtervoegsels eromheen veranderen. Herken je de stam, dan kun je nieuwe woorden vaak raden.';
+  main.appendChild(intro);
+
+  const toggleRow = document.createElement('div');
+  toggleRow.className = 'checkbox-row';
+  toggleRow.innerHTML = `
+    <button class="chip-toggle ${stammenModus==='overzicht'?'on':''}" id="stOverzichtBtn">📖 Woordfamilies</button>
+    <button class="chip-toggle ${stammenModus==='oefenen'?'on':''}" id="stOefenBtn">❓ Oefenen</button>
+  `;
+  main.appendChild(toggleRow);
+
+  const body = document.createElement('div');
+  body.id = 'stammenBody';
+  main.appendChild(body);
+
+  document.getElementById('stOverzichtBtn').onclick = ()=>{ stammenModus='overzicht'; renderStammen(); };
+  document.getElementById('stOefenBtn').onclick = ()=>{ stammenModus='oefenen'; renderStammen(); };
+
+  if(stammenModus==='overzicht'){ drawStamOverzicht(); }
+  else{ stamQuizScore = {goed:0, fout:0}; nieuweStamVraag(); }
+}
+
+function drawStamOverzicht(){
+  const body = document.getElementById('stammenBody');
+  if(!body) return;
+  body.innerHTML = '';
+
+  const picker = document.createElement('div');
+  picker.className = 'root-picker';
+  ROOTS.forEach(root=>{
+    const chip = document.createElement('div');
+    chip.className = 'root-chip he' + (root===stamGekozen ? ' active' : '');
+    chip.innerHTML = `<div class="letters">${rootLabel(root)}</div>`;
+    chip.addEventListener('click', ()=>{ stamGekozen = root; drawStamOverzicht(); });
+    picker.appendChild(chip);
+  });
+  body.appendChild(picker);
+
+  const surface = document.createElement('div');
+  surface.className = 'card-surface';
+
+  const header = document.createElement('div');
+  header.className = 'root-header';
+  header.innerHTML = `<div class="letters he">${rootLabel(stamGekozen)}</div><div class="betekenis">kernbetekenis: <strong style="color:var(--accent)">${stamGekozen.betekenis}</strong></div>`;
+  surface.appendChild(header);
+
+  stamGekozen.familie.forEach(w=>{
+    const row = document.createElement('div');
+    row.className = 'root-row';
+    row.innerHTML = `
+      <div class="glyph he">${w.he}</div>
+      <div class="meta">
+        <div class="vorm">${w.vorm}</div>
+        <div class="betekenis-woord">${w.nl} <span class="muted">(${w.trans})</span></div>
+      </div>
+    `;
+    surface.appendChild(row);
+  });
+  body.appendChild(surface);
+}
+
+function nieuweStamVraag(){
+  const pool = alleWortelWoorden();
+  const vorige = stamQuizHuidig ? keyWortelWoord(stamQuizHuidig.item) : null;
+  const item = gewogenKeuze(pool, keyWortelWoord, vorige);
+  const font = settings.randomFont ? randomFont() : FONTS[0];
+  const foutRoots = shuffle(ROOTS.filter(r=>r!==item.root)).slice(0,3);
+  const opties = shuffle([item.root, ...foutRoots]);
+  stamQuizHuidig = {item, font, opties};
+  drawStamQuiz();
+}
+
+function drawStamQuiz(){
+  const body = document.getElementById('stammenBody');
+  if(!body) return;
+  body.innerHTML = '';
+  const {item, font, opties} = stamQuizHuidig;
+
+  const top = document.createElement('div');
+  top.className = 'quiz-top';
+  top.innerHTML = `<div class="muted">Welke stam (kernbetekenis) hoort bij dit woord?</div><div class="score-pill">✓ ${stamQuizScore.goed}  ✗ ${stamQuizScore.fout}</div>`;
+  body.appendChild(top);
+
+  const stage = document.createElement('div');
+  stage.className = 'quiz-stage';
+  stage.innerHTML = `<div class="quiz-glyph word he" style="font-family:${font.family}">${item.he}</div><div class="quiz-sub">${item.trans} — ${item.nl}</div>`;
+  body.appendChild(stage);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-bar';
+  feedback.id = 'stamFeedback';
+  body.appendChild(feedback);
+
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  opties.forEach(root=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.innerHTML = `<div><span class="he" style="font-size:1.2rem;">${rootLabel(root)}</span><br><span style="font-size:.72rem;font-weight:400;color:var(--text-dim)">${root.betekenis}</span></div>`;
+    b.addEventListener('click', ()=> beantwoordStamVraag(root, item, b, grid));
+    grid.appendChild(b);
+  });
+  body.appendChild(grid);
+}
+
+function beantwoordStamVraag(gekozenRoot, item, btn, grid){
+  Array.from(grid.children).forEach(b=>b.disabled = true);
+  const goed = gekozenRoot === item.root;
+  meldResultaat(keyWortelWoord(item), goed);
+  const fb = document.getElementById('stamFeedback');
+  if(goed){
+    stamQuizScore.goed++;
+    btn.classList.add('correct');
+    fb.textContent = 'Goed zo — de stam is '+rootLabel(item.root);
+    fb.className = 'feedback-bar good';
+  }else{
+    stamQuizScore.fout++;
+    btn.classList.add('wrong');
+    fb.textContent = 'Dit hoort bij stam '+rootLabel(item.root)+' ('+item.root.betekenis+')';
+    fb.className = 'feedback-bar bad';
+  }
+  Array.from(grid.children).forEach((b,i)=>{
+    if(stamQuizHuidig.opties[i] === item.root) b.classList.add('correct');
+  });
+  setTimeout(nieuweStamVraag, 1500);
+}
+
+/* ============ GEHEUGENSPEL ============ */
+
+let memState = null;
+
+function renderMemory(){
+  main.innerHTML = '';
+  if(huidigeMode==='wmemory'){
+    renderCategorieChips(main, renderMemory);
+  }
+  const controls = document.createElement('div');
+  controls.className = 'checkbox-row';
+  controls.innerHTML = `<button class="nav-btn wide" id="memNieuw">🔀 Nieuw spel</button>`;
+  main.appendChild(controls);
+
+  const meta = document.createElement('div');
+  meta.className = 'mem-meta';
+  meta.id = 'memMeta';
+  main.appendChild(meta);
+
+  const grid = document.createElement('div');
+  grid.className = 'memory-grid';
+  grid.id = 'memGrid';
+  main.appendChild(grid);
+
+  document.getElementById('memNieuw').onclick = startMemory;
+  startMemory();
+}
+
+function startMemory(){
+  const isWoorden = huidigeMode==='wmemory';
+  const beschikbaar = isWoorden ? woordenPool() : huidigePool();
+  const veld = isWoorden ? 'he' : 'letter';
+  const naamVeld = isWoorden ? 'nl' : 'naam';
+  const keyFn = isWoorden ? keyWoord : keyLetter;
+  const aantal = Math.min(8, beschikbaar.length);
+  const pool = shuffle(beschikbaar).slice(0, aantal);
+  let kaarten = [];
+  pool.forEach((item,i)=>{
+    const font = settings.randomFont ? randomFont() : FONTS[0];
+    kaarten.push({id:'l'+i, pairId:i, type:'letter', display:item[veld], naam:item[naamVeld], font:font.family, key:keyFn(item)});
+    kaarten.push({id:'n'+i, pairId:i, type:'naam', display:item[naamVeld], naam:item[naamVeld], key:keyFn(item)});
+  });
+  kaarten = shuffle(kaarten);
+  memState = {
+    kaarten, open:[], matched:new Set(), pogingen:0, locked:false
+  };
+  drawMemory();
+}
+
+function drawMemory(){
+  const grid = document.getElementById('memGrid');
+  const meta = document.getElementById('memMeta');
+  if(!grid) return;
+  meta.textContent = 'Pogingen: '+memState.pogingen+'   ·   Gevonden: '+memState.matched.size+' / '+ (memState.kaarten.length/2);
+  grid.innerHTML = '';
+  memState.kaarten.forEach((k, idx)=>{
+    const el = document.createElement('div');
+    const isOpen = memState.open.includes(idx) || memState.matched.has(k.pairId);
+    el.className = 'mem-card ' + (huidigeMode==='wmemory' ? 'word-mode ' : '') + (isOpen ? '' : 'hidden-face') + (memState.matched.has(k.pairId) ? ' matched' : '');
+    el.innerHTML = `<div class="inner">
+        <div class="glyph he" ${k.type==='letter' ? `style="font-family:${k.font}"` : ''}>${k.type==='letter' ? k.display : ''}</div>
+        <div class="naam">${k.type==='naam' ? k.display : ''}</div>
+      </div>`;
+    if(!isOpen){
+      el.addEventListener('click', ()=> klikMemory(idx));
+    }
+    grid.appendChild(el);
+  });
+  if(memState.matched.size === memState.kaarten.length/2){
+    const win = document.createElement('div');
+    win.className = 'card-surface';
+    win.style.textAlign = 'center';
+    win.innerHTML = `<div style="font-size:1.3rem;font-weight:800;color:var(--good);">🎉 Gefeliciteerd!</div><div class="muted">Opgelost in ${memState.pogingen} pogingen.</div>`;
+    grid.after(win);
+  }
+}
+
+function klikMemory(idx){
+  if(memState.locked) return;
+  if(memState.open.includes(idx)) return;
+  memState.open.push(idx);
+  drawMemory();
+  if(memState.open.length===2){
+    memState.locked = true;
+    memState.pogingen++;
+    const [a,b] = memState.open;
+    const ka = memState.kaarten[a], kb = memState.kaarten[b];
+    if(ka.pairId === kb.pairId){
+      memState.matched.add(ka.pairId);
+      meldResultaat(ka.key, true);
+      memState.open = [];
+      memState.locked = false;
+      drawMemory();
+    }else{
+      setTimeout(()=>{
+        memState.open = [];
+        memState.locked = false;
+        drawMemory();
+      }, 750);
+    }
+  }
+}
+
+/* ============ LETTERTYPE-GALERIJ ============ */
+
+let fontsGekozen = LETTERS[0].letter;
+
+function renderFonts(){
+  main.innerHTML = '';
+  const info = document.createElement('div');
+  info.className = 'muted';
+  info.style.padding = '2px 4px 10px';
+  info.textContent = 'Dezelfde letter kan er in gedrukte tekst behoorlijk anders uitzien. Kies hieronder een letter om ' + FONTS.length + ' stijlen naast elkaar te zien.';
+  main.appendChild(info);
+
+  const picker = document.createElement('div');
+  picker.className = 'letter-picker';
+  huidigePool().forEach(item=>{
+    const chip = document.createElement('div');
+    chip.className = 'pick-chip he' + (item.letter===fontsGekozen ? ' active' : '');
+    chip.textContent = item.letter;
+    chip.addEventListener('click', ()=>{ fontsGekozen = item.letter; renderFonts(); });
+    picker.appendChild(chip);
+  });
+  main.appendChild(picker);
+
+  const item = huidigePool().find(i=>i.letter===fontsGekozen) || LETTERS[0];
+
+  const surface = document.createElement('div');
+  surface.className = 'card-surface';
+  surface.innerHTML = `<div style="font-weight:800;margin-bottom:4px;">${item.naam}</div><div class="muted" style="margin-bottom:8px;">${item.klank}</div>`;
+  FONTS.forEach(f=>{
+    const row = document.createElement('div');
+    row.className = 'font-row';
+    row.innerHTML = `
+      <div class="glyph he" style="font-family:${f.family}">${item.letter}</div>
+      <div class="meta">
+        <div class="style-name">${f.label}</div>
+        <div class="letter-name">${f.family.split(',')[0].replace(/'/g,'')}</div>
+      </div>
+    `;
+    surface.appendChild(row);
+  });
+  main.appendChild(surface);
+}
+
+/* ============ VOORTGANG ============ */
+
+function renderProgress(){
+  main.innerHTML = '';
+
+  const c = voortgangCijfers();
+  const kop = document.createElement('div');
+  kop.className = 'muted';
+  kop.style.padding = '0 4px 10px';
+  kop.textContent = 'Voortgang van ' + actiefProfiel().naam
+    + (c.laatst ? ' — laatst geoefend op ' + new Date(c.laatst).toLocaleDateString('nl-NL') : '');
+  main.appendChild(kop);
+
+  const scores = document.createElement('div');
+  scores.className = 'score-kaart';
+  scores.innerHTML = `
+    <div class="score-vak"><div class="getal">${c.gedaan}</div><div class="wat">vragen gedaan</div></div>
+    <div class="score-vak"><div class="getal">${c.percentage}%</div><div class="wat">daarvan goed</div></div>
+    <div class="score-vak"><div class="getal">${c.beheerst}</div><div class="wat">onderdelen beheerst</div></div>
+  `;
+  main.appendChild(scores);
+
+  const alleItems = LETTERS.concat(SLOTLETTERS).map(it=>({key:keyLetter(it), label:it.letter, naam:it.naam}))
+    .concat(NIKUD.map(n=>({key:keyNikud(n), label:n.vb, naam:n.naam})))
+    .concat(WOORDEN.map(w=>({key:keyWoord(w), label:w.he, naam:w.nl})))
+    .concat(ZINNEN.map(z=>({key:keyZin(z), label:'💬', naam:z.nl})))
+    .concat(alleWortelWoorden().map(w=>({key:keyWortelWoord(w), label:w.he, naam:w.nl+' ('+rootLabel(w.root)+')'})));
+
+  const metData = alleItems.filter(it=>voortgang[it.key]);
+
+  const surface = document.createElement('div');
+  surface.className = 'card-surface';
+
+  if(metData.length===0){
+    surface.innerHTML = '<div class="muted">Nog geen oefengegevens. Doe een paar quizvragen — je voortgang verschijnt hier, en moeilijke letters komen daarna vaker terug.</div>';
+    main.appendChild(surface);
+    return;
+  }
+
+  metData.sort((a,b)=> (accuracyVan(a.key) ?? 1) - (accuracyVan(b.key) ?? 1));
+
+  metData.forEach(it=>{
+    const acc = accuracyVan(it.key);
+    const pct = Math.round(acc*100);
+    const st = voortgang[it.key];
+    const row = document.createElement('div');
+    row.className = 'prog-row';
+    row.innerHTML = `
+      <div class="glyph he">${it.label}</div>
+      <div class="prog-label">${it.naam}</div>
+      <div class="prog-bar-bg"><div class="prog-bar-fill" style="width:${pct}%"></div></div>
+      <div class="prog-pct">${pct}%</div>
+    `;
+    row.title = it.naam+' — '+st.correct+' goed, '+st.wrong+' fout';
+    surface.appendChild(row);
+  });
+  main.appendChild(surface);
+
+  const legend = document.createElement('div');
+  legend.className = 'muted';
+  legend.style.padding = '10px 4px 0';
+  legend.textContent = 'Gesorteerd op moeilijkheid (laagste score bovenaan). Deze letters komen vaker terug in de quizvormen.';
+  main.appendChild(legend);
+}
+
+/* ============ START ============ */
+herstelPlek();
+syncInstellingenVelden();
+tekenProfielKnop();
+renderSectieKnoppen();
+renderTabsBar();
+render();
+
+if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(e=>console.log('offline-cache niet actief:', e.message));
+  });
+}
+
+})();
+</script>
+</body>
+</html>
