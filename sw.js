@@ -3,7 +3,7 @@
    te pas. Andersom (cache eerst) zou betekenen dat nieuw materiaal soms
    dagen niet doorkomt, en dat is precies wat we niet willen. */
 
-const CACHE = 'hebreeuws-v1';
+const CACHE = 'hebreeuws-v2';
 const BESTANDEN = [
   './',
   './index.html',
@@ -37,8 +37,16 @@ self.addEventListener('fetch', e=>{
   const eigenBestand = new URL(verzoek.url).origin === location.origin;
 
   if(eigenBestand){
+    /* Let op: een gewone fetch() mag de HTTP-cache van de browser gebruiken.
+       GitHub Pages zet daar tien minuten op, dus "netwerk eerst" leverde
+       alsnog oude bestanden op — een update kwam dan niet door. Met
+       cache:'reload' gaat het verzoek gegarandeerd langs de server. */
+    const versVerzoek = new Request(verzoek.url, {
+      cache: 'reload',
+      credentials: 'same-origin'
+    });
     e.respondWith(
-      fetch(verzoek)
+      fetch(versVerzoek)
         .then(antwoord=>{
           const kopie = antwoord.clone();
           caches.open(CACHE).then(c=>c.put(verzoek, kopie)).catch(()=>{});

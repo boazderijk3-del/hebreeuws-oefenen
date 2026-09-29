@@ -2513,7 +2513,10 @@ render();
 
 if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
   window.addEventListener('load', ()=>{
-    navigator.serviceWorker.register('sw.js').catch(e=>console.log('offline-cache niet actief:', e.message));
+    // updateViaCache:'none' — ook de service worker zelf nooit uit de
+    // browsercache halen, anders blijft een oude versie zichzelf in stand houden
+    navigator.serviceWorker.register('sw.js', {updateViaCache:'none'})
+      .catch(e=>console.log('offline-cache niet actief:', e.message));
   });
 }
 
