@@ -365,6 +365,12 @@
       </div>
       <button class="danger-btn" id="resetProgress">Reset voortgang</button>
     </div>
+    <div class="setting-row">
+      <div>
+        <div style="font-weight:700;">Materiaal</div>
+        <div class="muted" id="materiaalVersie">—</div>
+      </div>
+    </div>
   </div>
 
   <div class="section-switch" id="sectionSwitch">
@@ -2504,6 +2510,9 @@ function renderProgress(){
 }
 
 /* ============ START ============ */
+document.getElementById('materiaalVersie').textContent =
+  WOORDEN.length + ' woorden · ' + ZINNEN.length + ' zinnen · ' + ROOTS.length + ' stammen'
+  + (M.VERSIE ? '  —  bijgewerkt ' + M.VERSIE : '');
 herstelPlek();
 syncInstellingenVelden();
 tekenProfielKnop();

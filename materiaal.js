@@ -32,6 +32,11 @@
 window.MATERIAAL = (function(){
 "use strict";
 
+/* Datum van de laatste materiaalwijziging. Zet deze bij elke toevoeging op
+   de dag van vandaag: in de app staat hij onder Instellingen, zodat je op je
+   telefoon kunt zien of je de nieuwste lijst binnen hebt. */
+const VERSIE = '2026-09-29';
+
 /* ---------------------------------------------------------------- LETTERS */
 
 const LETTERS = [
@@ -651,6 +656,7 @@ const ROOTS = [
 ];
 
 return {
+  VERSIE,
   LETTERS, SLOTLETTERS, NIKUD, DIAKRIETEN,
   CATEGORIE_LABELS, WOORDEN,
   ZIN_CATEGORIE_LABELS, ZINNEN,
