@@ -69,6 +69,18 @@ De werkwijze is steeds dezelfde:
    versie op en valt alleen terug op de offline-kopie als er geen verbinding
    is — een update komt dus meteen door.
 
+**Twee dingen die gemeten zijn en die je moet weten:**
+
+- GitHub wisselt de bestanden niet allemaal op hetzelfde moment om. Vlak na
+  een push kun je dus één keer de oude lijst zien; nog een keer verversen en
+  hij is er. Onder **Instellingen** staat welk materiaal je binnen hebt
+  (`275 woorden · 67 zinnen · 11 stammen — bijgewerkt <datum>`), zodat je dat
+  kunt controleren in plaats van gokken.
+- De offline-cache haalt bewust met `cache:'reload'` op. Zonder dat gebruikt
+  een gewone `fetch()` de browsercache, en die staat bij GitHub Pages op tien
+  minuten — dan lijkt "netwerk eerst" te werken terwijl je oud materiaal
+  krijgt. Precies die fout zat er eerst in.
+
 ### Een woord toevoegen
 
 In `materiaal.js`, in de lijst `WOORDEN`:
