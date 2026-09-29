@@ -305,6 +305,14 @@
   .section-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin:18px 0 8px;font-weight:700;}
 
   .checkbox-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  /* veel categorieën vullen op een telefoon het halve scherm voordat je de
+     oefening ziet; daarom schuiven in plaats van afbreken */
+  .checkbox-row.chip-scroll{
+    flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    padding-bottom:4px;scrollbar-width:none;
+  }
+  .checkbox-row.chip-scroll::-webkit-scrollbar{display:none;}
+  .checkbox-row.chip-scroll .chip-toggle{flex:0 0 auto;}
   .chip-toggle{background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:7px 13px;font-size:.78rem;cursor:pointer;color:var(--text-dim);}
   .chip-toggle.on{border-color:var(--accent2);color:var(--accent2);background:rgba(123,110,246,.12);}
 
@@ -623,7 +631,7 @@ function woordenPool(){
 
 function renderCategorieChips(container, onChange){
   const row = document.createElement('div');
-  row.className = 'checkbox-row';
+  row.className = 'checkbox-row chip-scroll';
   WOORD_CATEGORIEEN.forEach(cat=>{
     const chip = document.createElement('button');
     chip.className = 'chip-toggle' + (woordCategorieFilter===cat ? ' on' : '');
@@ -1872,7 +1880,7 @@ function drawZinnen(){
 
   // categoriekeuze
   const catRij = document.createElement('div');
-  catRij.className = 'checkbox-row';
+  catRij.className = 'checkbox-row chip-scroll';
   ZIN_CATEGORIEEN.forEach(cat=>{
     const chip = document.createElement('button');
     chip.className = 'chip-toggle' + (zinCategorieFilter===cat ? ' on' : '');
