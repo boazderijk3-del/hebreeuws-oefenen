@@ -3,7 +3,7 @@
    te pas. Andersom (cache eerst) zou betekenen dat nieuw materiaal soms
    dagen niet doorkomt, en dat is precies wat we niet willen. */
 
-const CACHE = 'hebreeuws-v3';
+const CACHE = 'hebreeuws-v4';
 const BESTANDEN = [
   './',
   './index.html',
