@@ -3,10 +3,11 @@
    te pas. Andersom (cache eerst) zou betekenen dat nieuw materiaal soms
    dagen niet doorkomt, en dat is precies wat we niet willen. */
 
-const CACHE = 'hebreeuws-v2';
+const CACHE = 'hebreeuws-v3';
 const BESTANDEN = [
   './',
   './index.html',
+  './styles.css',
   './materiaal.js',
   './manifest.webmanifest',
   './icon-192.png',
